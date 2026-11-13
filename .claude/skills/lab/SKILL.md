@@ -6,13 +6,13 @@ argument-hint: <lab number>
 
 # Solving lab $ARGUMENTS
 
-## Inputs (outside the repo, in `../LABS/LAB<N>/`)
-- Stage requirements: `../LABS/LAB<N>/<N>.<k>/_docs/Lab<N>_<k>_instruction.md` (+ `images/`)
-- Teacher's Python reference ("wirtualny dziekanat"): the code in `../LABS/LAB<N>/<N>.<k>/`.
+## Inputs (git-ignored, in `LABS/LAB<N>/`)
+- Stage requirements: `LABS/LAB<N>/<N>.<k>/_docs/Lab<N>_<k>_instruction.md` (+ `images/`)
+- Teacher's Python reference ("wirtualny dziekanat"): the code in `LABS/LAB<N>/<N>.<k>/`.
   Read it to see what's expected, then build the equivalent in NestJS for this project's domain.
   The `requirements.txt` there is only Python dependencies, not requirements.
-- Scoring table: `../LABS/LAB<N>/README.md` (if present). Make sure every scored item is covered.
-- Report template (table of contents): `../LABS/LAB<N>/imie_nazwisko_grupa_sprawozdanie_projekt_<N>.docx`
+- Scoring table: `LABS/LAB<N>/README.md` (if present). Make sure every scored item is covered.
+- Report template (table of contents): `LABS/LAB<N>/imie_nazwisko_grupa_sprawozdanie_projekt_<N>.docx`
 
 Read all stage instructions before starting, because later stages often change earlier design choices.
 If something is missing (e.g. no template docx), tell the user and ask.
@@ -20,7 +20,7 @@ If something is missing (e.g. no template docx), tell the user and ask.
 ## Phase 1: one stage at a time (<N>.1, then <N>.2, then <N>.3)
 For each stage:
 1. Implement the stage following `CLAUDE.md` (vertical slicing, migrations, transactions, Swagger).
-   Reuse the Docker files the teacher provides in `../LABS/LAB<N>/<N>.<k>/` (Dockerfiles, docker-compose files):
+   Reuse the Docker files the teacher provides in `LABS/LAB<N>/<N>.<k>/` (Dockerfiles, docker-compose files):
    copy them into the repo and adapt them (service names, ports, networks, paths, our domain) rather than writing
    new ones. For any other teacher file that could be reused (SQL, seed data, env/config files, ...), ask the user
    first. In the stage summary, list what you reused and what you changed.

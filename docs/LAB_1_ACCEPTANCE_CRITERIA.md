@@ -6,7 +6,7 @@ Dokument do prezentacji etapów 1.1–1.3 prowadzącej. Projekt używa NestJS/Ty
 
 | Wymaganie | Gdzie pokazać | Konkretna funkcja / element |
 | --- | --- | --- |
-| Własny projekt w VS Code | [package.json](../package.json), [main.ts](../src/main.ts), [launch.json](../../.vscode/launch.json) | Zależności NestJS, skrypty npm, `bootstrap()`, konfiguracja debugowania. |
+| Własny projekt w VS Code | [package.json](../package.json), [main.ts](../src/main.ts), [launch.json](../.vscode/launch.json) | Zależności NestJS, skrypty npm, `bootstrap()`, konfiguracja debugowania. |
 | PostgreSQL w kontenerze Dockera | [docker-compose.yml](../docker-compose.yml) | Usługa `postgres`: obraz PostgreSQL 16, port 5432, dane dostępowe, wolumen `pgdata`, healthcheck. |
 | Połączenie aplikacji z PostgreSQL | [database.module.ts](../src/infrastructure/database/database.module.ts), [environment.ts](../src/config/environment.ts) | `TypeOrmModule.forRootAsync()` i jego `useFactory`; `validateEnvironment()` dostarcza parametry `DB_*`. |
 | Baza z produktami, kategoriami i cenami | [1790000000000-create-products.ts](../src/infrastructure/database/migrations/1790000000000-create-products.ts) | `CreateProducts1790000000000.up()` tworzy `products`, `categories`, relację i przykładowe dane. `Product` i `Category` w plikach encji mapują tabele na klasy TypeORM. |
@@ -93,9 +93,9 @@ Jeśli kod obrazu nie zmienił się od poprzedniej budowy, można wykonać samo 
 
 ## Oryginalne testy Python od prowadzącej
 
-[1.3/tests/test_students_api.py](../../1.3/tests/test_students_api.py) testuje **FastAPI i studentów**, a nie naszą aplikację NestJS z produktami. Testy używają `TestClient` i oryginalnego kodu w `1.3/app/REST`. Nie kieruje się ich na uruchomiony backend NestJS. Odpowiednik scenariuszy dla produktów to `npm run test:required`.
+[1.3/tests/test_students_api.py](../LABS/LAB1/1.3/tests/test_students_api.py) testuje **FastAPI i studentów**, a nie naszą aplikację NestJS z produktami. Testy używają `TestClient` i oryginalnego kodu w `1.3/app/REST`. Nie kieruje się ich na uruchomiony backend NestJS. Odpowiednik scenariuszy dla produktów to `npm run test:required`.
 
-Dla oryginalnych testów dodany jest osobny [docker-compose.tests.yml](../../1.3/docker-compose.tests.yml). Tworzy bazę na porcie **5433**, z oryginalnym SQL-em prowadzącej i ulotnym katalogiem danych. Nie koliduje z PostgreSQL aplikacji na 5432. Nie zmienia plików testów od prowadzącej.
+Dla oryginalnych testów dodany jest osobny [docker-compose.tests.yml](../LABS/LAB1/1.3/docker-compose.tests.yml). Tworzy bazę na porcie **5433**, z oryginalnym SQL-em prowadzącej i ulotnym katalogiem danych. Nie koliduje z PostgreSQL aplikacji na 5432. Nie zmienia plików testów od prowadzącej.
 
 PowerShell, od katalogu głównego `ZTP`:
 

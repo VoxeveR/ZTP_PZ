@@ -16,7 +16,12 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Lab materials from the teacher (local only)
+LABS/

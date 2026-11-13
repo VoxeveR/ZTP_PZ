@@ -1,7 +1,7 @@
 # ZTP Products API
 
 Student project for the ZTP course. For each lab the teacher provides a reference solution in Python/FastAPI
-("wirtualny dziekanat", students domain) in `../LABS/LAB<N>/`. This repo re-implements the same requirements
+("wirtualny dziekanat", students domain) in `LABS/LAB<N>/`. This repo re-implements the same requirements
 in NestJS for a products domain, so match the requirements in spirit and don't port the Python code line by line.
 Reuse Docker files the teacher provides (Dockerfiles, docker-compose files) instead of writing your own, and adapt
 them to this project as needed. For any other teacher file (SQL, seed data, configs, ...), ask before reusing it.
