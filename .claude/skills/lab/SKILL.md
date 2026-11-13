@@ -20,10 +20,10 @@ If something is missing (e.g. no template docx), tell the user and ask.
 ## Phase 1: one stage at a time (<N>.1, then <N>.2, then <N>.3)
 For each stage:
 1. Implement the stage following `CLAUDE.md` (vertical slicing, migrations, transactions, Swagger).
-   Reuse what the teacher provides in `../LABS/LAB<N>/<N>.<k>/` wherever you can: docker-compose files,
-   Dockerfiles, SQL/seed data, env and config files. Copy them into the repo and adapt them (service names,
-   ports, networks, paths, our domain) rather than writing new ones. In the stage summary, list what you reused
-   and what you changed.
+   Reuse the Docker files the teacher provides in `../LABS/LAB<N>/<N>.<k>/` (Dockerfiles, docker-compose files):
+   copy them into the repo and adapt them (service names, ports, networks, paths, our domain) rather than writing
+   new ones. For any other teacher file that could be reused (SQL, seed data, env/config files, ...), ask the user
+   first. In the stage summary, list what you reused and what you changed.
 2. Add or extend e2e tests. Run `npm run typecheck`, `npm test`, and `npm run test:docker` if Docker is up.
 3. Append a `## Etap <N>.<k>` section to `docs/LAB_<N>_ACCEPTANCE_CRITERIA.md` (create the file for <N>.1).
 4. Show the user a short summary of the changes and the new criteria section, and **ask for acceptance**.
