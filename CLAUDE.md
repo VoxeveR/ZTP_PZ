@@ -42,7 +42,8 @@ To solve a whole lab, use the `/lab <N>` skill.
 - Domain errors are thrown by the service and mapped in the feature's exception filter: validation 422,
   conflict 409, missing related entity 400, not found 404. Malformed body or missing fields: 400.
 - All routes go under the `api/v1` prefix and need Swagger decorators.
-- Every new endpoint or rule needs an e2e test in `backend/test/*.e2e.test.mjs` that uses `prepareTestDatabase()`.
+- Add tests only when the lab instruction asks for them. When it does, put them in `backend/test/*.e2e.test.mjs`
+  and use `prepareTestDatabase()`. Existing tests must always keep passing.
 - Code and identifiers are in English. Acceptance criteria and reports are in Polish.
 
 ## Gotchas

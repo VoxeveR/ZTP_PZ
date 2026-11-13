@@ -24,7 +24,10 @@ For each stage:
    copy them into the repo and adapt them (service names, ports, networks, paths, our domain) rather than writing
    new ones. For any other teacher file that could be reused (SQL, seed data, env/config files, ...), ask the user
    first. In the stage summary, list what you reused and what you changed.
-2. Add or extend e2e tests. In `backend/`, run `npm run typecheck`, `npm test`, and `npm run test:docker` if Docker is up.
+2. Write new tests only if the stage instruction or scoring table asks for them (e.g. lab 1.3 had a "Testy"
+   section and scored tests), and only the kind and scope it asks for. Otherwise don't add tests. Either way,
+   existing tests must keep passing: in `backend/`, run `npm run lint`, `npm run typecheck`, `npm test`, and
+   `npm run test:docker` if Docker is up. If a change breaks an existing test, fix the code or update that test.
 3. Append a `## Etap <N>.<k>` section to `docs/LAB_<N>_ACCEPTANCE_CRITERIA.md` (create the file for <N>.1).
 4. Show the user a short summary of the changes and the new criteria section, and **ask for acceptance**.
    If they don't accept, make the requested adjustments and ask again. Don't move on before acceptance.
