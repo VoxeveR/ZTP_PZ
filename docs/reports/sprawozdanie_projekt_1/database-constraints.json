@@ -1,0 +1,92 @@
+[
+  {
+    "table_name": "categories",
+    "conname": "categories_name_key",
+    "contype": "u",
+    "definition": "UNIQUE (name)"
+  },
+  {
+    "table_name": "categories",
+    "conname": "categories_pkey",
+    "contype": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "categories",
+    "conname": "categories_price_range_check",
+    "contype": "c",
+    "definition": "CHECK (((min_price >= (0)::numeric) AND (max_price >= min_price)))"
+  },
+  {
+    "table_name": "forbidden_product_names",
+    "conname": "forbidden_product_names_name_check",
+    "contype": "c",
+    "definition": "CHECK ((length(TRIM(BOTH FROM name)) > 0))"
+  },
+  {
+    "table_name": "forbidden_product_names",
+    "conname": "forbidden_product_names_name_key",
+    "contype": "u",
+    "definition": "UNIQUE (name)"
+  },
+  {
+    "table_name": "forbidden_product_names",
+    "conname": "forbidden_product_names_pkey",
+    "contype": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "product_history",
+    "conname": "product_history_action_check",
+    "contype": "c",
+    "definition": "CHECK (((action)::text = ANY ((ARRAY['CREATE'::character varying, 'REPLACE'::character varying, 'UPDATE'::character varying, 'DELETE'::character varying])::text[])))"
+  },
+  {
+    "table_name": "product_history",
+    "conname": "product_history_current_state_check",
+    "contype": "c",
+    "definition": "CHECK ((jsonb_typeof(current_state) = 'object'::text))"
+  },
+  {
+    "table_name": "product_history",
+    "conname": "product_history_pkey",
+    "contype": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "product_history",
+    "conname": "product_history_previous_state_check",
+    "contype": "c",
+    "definition": "CHECK ((jsonb_typeof(previous_state) = 'object'::text))"
+  },
+  {
+    "table_name": "products",
+    "conname": "products_category_id_fkey",
+    "contype": "f",
+    "definition": "FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT"
+  },
+  {
+    "table_name": "products",
+    "conname": "products_name_check",
+    "contype": "c",
+    "definition": "CHECK (((name)::text ~ '^[[:alnum:]]{3,20}$'::text))"
+  },
+  {
+    "table_name": "products",
+    "conname": "products_pkey",
+    "contype": "p",
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "table_name": "products",
+    "conname": "products_price_check",
+    "contype": "c",
+    "definition": "CHECK ((price >= (0)::numeric))"
+  },
+  {
+    "table_name": "products",
+    "conname": "products_quantity_check",
+    "contype": "c",
+    "definition": "CHECK ((quantity >= 0))"
+  }
+]

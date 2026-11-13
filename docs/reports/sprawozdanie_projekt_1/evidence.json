@@ -1,0 +1,430 @@
+{
+  "base": "http://127.0.0.1:53144",
+  "database": "ztp_test_b9c41b3ea14b4aca88a39fc12cfb8fed",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "min_price": "10.00",
+      "max_price": "100000.00"
+    },
+    {
+      "id": 2,
+      "name": "Books",
+      "min_price": "1.00",
+      "max_price": "1000.00"
+    },
+    {
+      "id": 3,
+      "name": "Food",
+      "min_price": "0.01",
+      "max_price": "500.00"
+    }
+  ],
+  "cases": [
+    {
+      "key": "01-get-products",
+      "method": "GET",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "status": 200,
+      "responseBody": [
+        {
+          "id": 1,
+          "name": "Headphones",
+          "price": "199.90",
+          "quantity": 0,
+          "category": {
+            "id": 1,
+            "name": "Electronics",
+            "minPrice": "10.00",
+            "maxPrice": "100000.00"
+          }
+        },
+        {
+          "id": 2,
+          "name": "Laptop",
+          "price": "3499.99",
+          "quantity": 0,
+          "category": {
+            "id": 1,
+            "name": "Electronics",
+            "minPrice": "10.00",
+            "maxPrice": "100000.00"
+          }
+        },
+        {
+          "id": 3,
+          "name": "CleanCode",
+          "price": "89.99",
+          "quantity": 0,
+          "category": {
+            "id": 2,
+            "name": "Books",
+            "minPrice": "1.00",
+            "maxPrice": "1000.00"
+          }
+        },
+        {
+          "id": 4,
+          "name": "Coffee",
+          "price": "29.50",
+          "quantity": 0,
+          "category": {
+            "id": 3,
+            "name": "Food",
+            "minPrice": "0.01",
+            "maxPrice": "500.00"
+          }
+        }
+      ],
+      "image": "assets/01-get-products.png"
+    },
+    {
+      "key": "02-post-created",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "ReportProduct1",
+        "price": "149.90",
+        "quantity": 10,
+        "categoryId": 1
+      },
+      "status": 201,
+      "responseBody": {
+        "id": 5,
+        "name": "ReportProduct1",
+        "price": "149.90",
+        "quantity": 10,
+        "category": {
+          "id": 1,
+          "name": "Electronics",
+          "minPrice": "10.00",
+          "maxPrice": "100000.00"
+        }
+      },
+      "image": "assets/02-post-created.png"
+    },
+    {
+      "key": "03-get-product",
+      "method": "GET",
+      "route": "/api/v1/products/{id}",
+      "url": "http://127.0.0.1:53144/api/v1/products/5",
+      "id": 5,
+      "status": 200,
+      "responseBody": {
+        "id": 5,
+        "name": "ReportProduct1",
+        "price": "149.90",
+        "quantity": 10,
+        "category": {
+          "id": 1,
+          "name": "Electronics",
+          "minPrice": "10.00",
+          "maxPrice": "100000.00"
+        }
+      },
+      "image": "assets/03-get-product.png"
+    },
+    {
+      "key": "04-post-name-422",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "ab",
+        "price": "149.90",
+        "quantity": 10,
+        "categoryId": 1
+      },
+      "status": 422,
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Product name must contain 3–20 letters or digits",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/04-post-name-422.png"
+    },
+    {
+      "key": "05-post-price-422",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "PriceReport1",
+        "price": "9.99",
+        "quantity": 10,
+        "categoryId": 1
+      },
+      "status": 422,
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Price must be between 10.00 and 100000.00 for this category",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/05-post-price-422.png"
+    },
+    {
+      "key": "06-post-stock-422",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "StockReport1",
+        "price": "149.90",
+        "quantity": -1,
+        "categoryId": 1
+      },
+      "status": 422,
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Quantity must be between 0 and 2147483647",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/06-post-stock-422.png"
+    },
+    {
+      "key": "07-post-forbidden-422",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "FakeReport1",
+        "price": "149.90",
+        "quantity": 10,
+        "categoryId": 1
+      },
+      "status": 422,
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Product name contains a forbidden phrase",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/07-post-forbidden-422.png"
+    },
+    {
+      "key": "08-post-missing-400",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "MissingReport1",
+        "price": "149.90",
+        "categoryId": 1
+      },
+      "status": 400,
+      "responseBody": {
+        "message": [
+          "quantity must be an integer number"
+        ],
+        "error": "Bad Request",
+        "statusCode": 400
+      },
+      "image": "assets/08-post-missing-400.png"
+    },
+    {
+      "key": "09-post-conflict-409",
+      "method": "POST",
+      "route": "/api/v1/products",
+      "url": "http://127.0.0.1:53144/api/v1/products",
+      "requestBody": {
+        "name": "REPORTPRODUCT1",
+        "price": "149.90",
+        "quantity": 10,
+        "categoryId": 1
+      },
+      "status": 409,
+      "responseBody": {
+        "statusCode": 409,
+        "message": "Product name already exists",
+        "error": "CONFLICT"
+      },
+      "image": "assets/09-post-conflict-409.png"
+    },
+    {
+      "key": "10-put-replaced",
+      "method": "PUT",
+      "route": "/api/v1/products/{id}",
+      "url": "http://127.0.0.1:53144/api/v1/products/5",
+      "requestBody": {
+        "name": "ReportProduct1",
+        "price": "199.90",
+        "quantity": 12,
+        "categoryId": 1
+      },
+      "id": 5,
+      "status": 200,
+      "responseBody": {
+        "id": 5,
+        "name": "ReportProduct1",
+        "price": "199.90",
+        "quantity": 12,
+        "category": {
+          "id": 1,
+          "name": "Electronics",
+          "minPrice": "10.00",
+          "maxPrice": "100000.00"
+        }
+      },
+      "image": "assets/10-put-replaced.png"
+    },
+    {
+      "key": "11-patch-updated",
+      "method": "PATCH",
+      "route": "/api/v1/products/{id}",
+      "url": "http://127.0.0.1:53144/api/v1/products/5",
+      "requestBody": {
+        "quantity": 7
+      },
+      "id": 5,
+      "status": 200,
+      "responseBody": {
+        "id": 5,
+        "name": "ReportProduct1",
+        "price": "199.90",
+        "quantity": 7,
+        "category": {
+          "id": 1,
+          "name": "Electronics",
+          "minPrice": "10.00",
+          "maxPrice": "100000.00"
+        }
+      },
+      "image": "assets/11-patch-updated.png"
+    },
+    {
+      "key": "12-delete-product",
+      "method": "DELETE",
+      "route": "/api/v1/products/{id}",
+      "url": "http://127.0.0.1:53144/api/v1/products/5",
+      "id": 5,
+      "status": 204,
+      "responseBody": "",
+      "image": "assets/12-delete-product.png"
+    },
+    {
+      "key": "13-get-deleted-404",
+      "method": "GET",
+      "route": "/api/v1/products/{id}",
+      "url": "http://127.0.0.1:53144/api/v1/products/5",
+      "id": 5,
+      "status": 404,
+      "responseBody": {
+        "statusCode": 404,
+        "message": "Product with ID 5 was not found",
+        "error": "NOT_FOUND"
+      },
+      "image": "assets/13-get-deleted-404.png"
+    },
+    {
+      "key": "14-history-after-delete",
+      "method": "GET",
+      "route": "/api/v1/products/{id}/history",
+      "url": "http://127.0.0.1:53144/api/v1/products/5/history",
+      "id": 5,
+      "status": 200,
+      "responseBody": [
+        {
+          "id": 4,
+          "productId": 5,
+          "action": "DELETE",
+          "previousState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "199.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 7
+          },
+          "currentState": {},
+          "changedAt": "2026-10-24T09:02:33.354Z"
+        },
+        {
+          "id": 3,
+          "productId": 5,
+          "action": "UPDATE",
+          "previousState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "199.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 12
+          },
+          "currentState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "199.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 7
+          },
+          "changedAt": "2026-10-24T09:02:31.926Z"
+        },
+        {
+          "id": 2,
+          "productId": 5,
+          "action": "REPLACE",
+          "previousState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "149.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 10
+          },
+          "currentState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "199.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 12
+          },
+          "changedAt": "2026-10-24T09:02:30.356Z"
+        },
+        {
+          "id": 1,
+          "productId": 5,
+          "action": "CREATE",
+          "previousState": {},
+          "currentState": {
+            "id": 5,
+            "name": "ReportProduct1",
+            "price": "149.90",
+            "category": {
+              "id": 1,
+              "name": "Electronics",
+              "maxPrice": "100000.00",
+              "minPrice": "10.00"
+            },
+            "quantity": 10
+          },
+          "changedAt": "2026-10-24T09:02:18.802Z"
+        }
+      ],
+      "image": "assets/14-history-after-delete.png"
+    }
+  ]
+}

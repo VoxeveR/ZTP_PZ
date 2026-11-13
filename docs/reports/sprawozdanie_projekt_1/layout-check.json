@@ -1,0 +1,170 @@
+[
+  {
+    "page": 1,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 601,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\nSPRAWOZDANIE\n\nProjekt 1\n\nAplikacja do zarządzania\nproduktami (CRUD)\n\nNestJS • TypeScript • T",
+    "end": "............................................\n\nZakres: etapy 1.1–1.3 — CRUD, walidacja, historia zmian i testy integracyjne.\n\nData opracowania: 24.10.2026\n\nSprawozdanie • "
+  },
+  {
+    "page": 2,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 2204,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n1. Wstęp\n\nCelem projektu jest udostępnienie REST API do zarządzania produktami przypisanymi ",
+    "end": "m. ProductsPersistenceModule eksportuje repozytorium produktów do operacji CRUD i odczytu historii, dzięki czemu moduły nie tworzą cyklicznej zależności.\n\nSprawozdanie • "
+  },
+  {
+    "page": 3,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 2197,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n1.2. Baza danych\n\nAplikacja korzysta z relacyjnej bazy PostgreSQL 16 uruchamianej przez Dock",
+    "end": "łowy: src/infrastructure/database/migrations/1790000000000-create-products.ts; 1790000001000-extend-products.ts; 1790000002000-create-product-history.ts.\n\nSprawozdanie • "
+  },
+  {
+    "page": 4,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 722,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n1.2.1. Wygenerowany schemat ERD\n\nRysunek 1. Schemat czterech tabel aplikacji, wygenerowany z",
+    "end": "trzną tabelę metadanych migracji TypeORM. Indeks product_history_product_changed_idx wspiera filtrowanie po produkcie i sortowanie wpisów od najnowszych.\n\nSprawozdanie • "
+  },
+  {
+    "page": 5,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1892,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n1.3. FastAPI i framework zastosowany w projekcie\n\nFastAPI jest frameworkiem Python do budowa",
+    "end": "dokumentację Swagger; przyszły klient React może korzystać z tego samego kontraktu. Serwer nie wymaga sesji użytkownika do realizacji opisanych operacji.\n\nSprawozdanie • "
+  },
+  {
+    "page": 6,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1803,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.2. Przepływ informacji w architekturze N-Layer\n\nRysunek 2. Przepływ żądania i odpowiedzi p",
+    "end": "ódłowy: src/features/products/products.controller.ts, products.service.ts, products.repository.ts; src/features/categories; src/features/product-history.\n\nSprawozdanie • "
+  },
+  {
+    "page": 7,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1823,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.3. Metody CRUD — implementacja\n\nMetoda i ścieżka\n\n\t\n\nDziałanie\n\n\t\n\nSukces\n\n\n\n\nGET /api/v1/",
+    "end": " dokładnej wartości dziesiętnej PostgreSQL.\n\nKod źródłowy: src/features/products/products.controller.ts; products.repository.ts; product-response.dto.ts.\n\nSprawozdanie • "
+  },
+  {
+    "page": 8,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1836,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.3.1. Zastosowane walidacje\n\nReguła\n\n\t\n\nSposób realizacji / wynik błędu\n\n\n\n\nStruktura body\n",
+    "end": "widełek.\n\nKod źródłowy: product-write.dto.ts; product-patch.dto.ts; product-id.pipe.ts; products.service.ts; infrastructure/http/body-validation.pipe.ts.\n\nSprawozdanie • "
+  },
+  {
+    "page": 9,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1894,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.3.2. Kody odpowiedzi\n\nKod HTTP\n\n\t\n\nZnaczenie i przykład w aplikacji\n\n\n\n\n200 OK\n\n\t\n\nUdany G",
+    "end": "s schematów i nagłówki HTTP. Treści odpowiedzi nie były zmieniane. Dłuższe listy pokazano częściowo. Baza demonstracyjna została po zakończeniu usunięta.\n\nSprawozdanie • "
+  },
+  {
+    "page": 10,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 377,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.1. Poprawny odczyt i utworzenie produktu\n\nGET zwraca listę startowych produktów. Następn",
+    "end": "\n\nRysunek 3. GET /api/v1/products — HTTP 200, fragment listy produktów z kategorią.\n\nRysunek 4. POST /api/v1/products — HTTP 201, utworzony produkt id=5.\n\nSprawozdanie • "
+  },
+  {
+    "page": 11,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 442,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.2. Pełna i częściowa aktualizacja\n\nPUT przesyła wszystkie cztery wymagane pola i zmienia",
+    "end": "\n\nRysunek 5. PUT /api/v1/products/{id} — HTTP 200, cena 199.90 i ilość 12.\n\nRysunek 6. PATCH /api/v1/products/{id} — HTTP 200, ilość zmieniona z 12 na 7.\n\nSprawozdanie • "
+  },
+  {
+    "page": 12,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 439,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.3. Usunięcie i obsługa braku produktu\n\nDELETE usuwa produkt i zwraca HTTP 204 bez body. ",
+    "end": "ysunek 7. DELETE /api/v1/products/{id} — HTTP 204, brak treści odpowiedzi.\n\nRysunek 8. GET usuniętego produktu — HTTP 404 z komunikatem o braku produktu.\n\nSprawozdanie • "
+  },
+  {
+    "page": 13,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 400,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.4. Walidacja nazwy i ceny\n\nPrzypadek 1: name = \"ab\" ma tylko dwa znaki. Przypadek 2: pri",
+    "end": " wartości.\n\nRysunek 9. POST — HTTP 422, nazwa musi zawierać 3–20 liter lub cyfr.\n\nRysunek 10. POST — HTTP 422, cena poza widełkami kategorii Electronics.\n\nSprawozdanie • "
+  },
+  {
+    "page": 14,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 406,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.5. Stan magazynowy i zakazane frazy\n\nPrzypadek 3: quantity = -1 narusza regułę nieujemne",
+    "end": " na wynik kontroli.\n\nRysunek 11. POST — HTTP 422, ilość musi należeć do zakresu 0–2147483647.\n\nRysunek 12. POST — HTTP 422, nazwa zawiera zakazaną frazę.\n\nSprawozdanie • "
+  },
+  {
+    "page": 15,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 377,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n2.4.6. Walidacja techniczna i konflikt nazw\n\nPrzypadek 5: w body POST pominięto quantity. Pr",
+    "end": "ct1, mimo różnej wielkości liter.\n\nRysunek 13. POST — HTTP 400, brak wymaganego pola quantity.\n\nRysunek 14. POST — HTTP 409, nazwa produktu już istnieje.\n\nSprawozdanie • "
+  },
+  {
+    "page": 16,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1965,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n3. Historia zmian\n\n3.1. Implementacja i zapis stanów\n\nHistoria stanowi osobny feature produc",
+    "end": ": src/features/products/products.service.ts, product.snapshot.ts; src/features/product-history/product-history.service.ts, product-history.repository.ts.\n\nSprawozdanie • "
+  },
+  {
+    "page": 17,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1035,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n3.2. Prezentacja GET /api/v1/products/{id}/history\n\nDla produktu id=5 wykonano kolejno POST,",
+    "end": " migracji nie otrzymują sztucznie utworzonej historii. Bezpośrednie zmiany SQL omijają mechanizm dopisywania historii realizowany przez serwis aplikacji.\n\nSprawozdanie • "
+  },
+  {
+    "page": 18,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1847,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n4. Testy\n\n4.1. Implementacja testów integracyjnych\n\nTesty znajdują się w backend/test i używ",
+    "end": "ają wtedy 500. Test potwierdza, że produkt i historia pozostają bez zmian. Ograniczenie jest usuwane w finally, a cała baza testowa po zakończeniu pliku.\n\nSprawozdanie • "
+  },
+  {
+    "page": 19,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 2129,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n4.2. Testy bez trwałego śladu w bazie\n\nIzolacja opiera się na osobnej bazie dla każdego plik",
+    "end": "atyczny reset po każdym pojedynczym teście.\n\nKod źródłowy: backend/test/support/test-database.mjs; hooki before()/after() w testach produktów i historii.\n\nSprawozdanie • "
+  },
+  {
+    "page": 20,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1510,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\n4.3. Uruchamianie testów i wynik\n\nWymagane są Node.js w wersji co najmniej 22, zależności np",
+    "end": "stał wykonany także na Windows. npm run test:docker pozwala sprawdzić sygnały w kontenerze; tego przebiegu nie przedstawiono jako wyniku powyższej sesji.\n\nSprawozdanie • "
+  },
+  {
+    "page": 21,
+    "width": 793.71875,
+    "height": 1122.53125,
+    "characters": 1613,
+    "start": "PROJEKT 1  /  ZARZĄDZANIE PRODUKTAMI\n\nŹródła i materiały projektu\n\nOpis implementacji oparto na kodzie projektu znajdującym się w ",
+    "end": "cznie występujące w bazie oraz osobno oznaczone powiązanie logiczne historii. Dane autora na stronie tytułowej należy uzupełnić przed oddaniem dokumentu.\n\nSprawozdanie • "
+  }
+]

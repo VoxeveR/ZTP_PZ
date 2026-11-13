@@ -1,0 +1,41 @@
+{
+  "completed": true,
+  "temporaryDatabaseRemoved": true,
+  "base": "http://127.0.0.1:53144",
+  "created": {
+    "id": 5,
+    "name": "ReportProduct1",
+    "price": "149.90",
+    "quantity": 10,
+    "category": {
+      "id": 1,
+      "name": "Electronics",
+      "minPrice": "10.00",
+      "maxPrice": "100000.00"
+    }
+  },
+  "replaced": {
+    "id": 5,
+    "name": "ReportProduct1",
+    "price": "199.90",
+    "quantity": 12,
+    "category": {
+      "id": 1,
+      "name": "Electronics",
+      "minPrice": "10.00",
+      "maxPrice": "100000.00"
+    }
+  },
+  "patched": {
+    "id": 5,
+    "name": "ReportProduct1",
+    "price": "199.90",
+    "quantity": 7,
+    "category": {
+      "id": 1,
+      "name": "Electronics",
+      "minPrice": "10.00",
+      "maxPrice": "100000.00"
+    }
+  }
+}

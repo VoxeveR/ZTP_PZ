@@ -1,0 +1,100 @@
+[
+  {
+    "id": 4,
+    "productId": 5,
+    "action": "DELETE",
+    "previousState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "199.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 7
+    },
+    "currentState": {},
+    "changedAt": "2026-10-24T09:02:33.354Z"
+  },
+  {
+    "id": 3,
+    "productId": 5,
+    "action": "UPDATE",
+    "previousState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "199.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 12
+    },
+    "currentState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "199.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 7
+    },
+    "changedAt": "2026-10-24T09:02:31.926Z"
+  },
+  {
+    "id": 2,
+    "productId": 5,
+    "action": "REPLACE",
+    "previousState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "149.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 10
+    },
+    "currentState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "199.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 12
+    },
+    "changedAt": "2026-10-24T09:02:30.356Z"
+  },
+  {
+    "id": 1,
+    "productId": 5,
+    "action": "CREATE",
+    "previousState": {},
+    "currentState": {
+      "id": 5,
+      "name": "ReportProduct1",
+      "price": "149.90",
+      "category": {
+        "id": 1,
+        "name": "Electronics",
+        "maxPrice": "100000.00",
+        "minPrice": "10.00"
+      },
+      "quantity": 10
+    },
+    "changedAt": "2026-10-24T09:02:18.802Z"
+  }
+]

@@ -1,0 +1,189 @@
+[
+  {
+    "table_name": "categories",
+    "column_name": "id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": "nextval('categories_id_seq'::regclass)"
+  },
+  {
+    "table_name": "categories",
+    "column_name": "name",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "character_maximum_length": 100,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "categories",
+    "column_name": "min_price",
+    "data_type": "numeric",
+    "udt_name": "numeric",
+    "character_maximum_length": null,
+    "numeric_precision": 10,
+    "numeric_scale": 2,
+    "is_nullable": "NO",
+    "column_default": "0"
+  },
+  {
+    "table_name": "categories",
+    "column_name": "max_price",
+    "data_type": "numeric",
+    "udt_name": "numeric",
+    "character_maximum_length": null,
+    "numeric_precision": 10,
+    "numeric_scale": 2,
+    "is_nullable": "NO",
+    "column_default": "99999999.99"
+  },
+  {
+    "table_name": "forbidden_product_names",
+    "column_name": "id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": "nextval('forbidden_product_names_id_seq'::regclass)"
+  },
+  {
+    "table_name": "forbidden_product_names",
+    "column_name": "name",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "character_maximum_length": 100,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": "nextval('product_history_id_seq'::regclass)"
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "product_id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "action",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "character_maximum_length": 10,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "previous_state",
+    "data_type": "jsonb",
+    "udt_name": "jsonb",
+    "character_maximum_length": null,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "current_state",
+    "data_type": "jsonb",
+    "udt_name": "jsonb",
+    "character_maximum_length": null,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "product_history",
+    "column_name": "changed_at",
+    "data_type": "timestamp with time zone",
+    "udt_name": "timestamptz",
+    "character_maximum_length": null,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": "clock_timestamp()"
+  },
+  {
+    "table_name": "products",
+    "column_name": "id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": "nextval('products_id_seq'::regclass)"
+  },
+  {
+    "table_name": "products",
+    "column_name": "name",
+    "data_type": "character varying",
+    "udt_name": "varchar",
+    "character_maximum_length": 20,
+    "numeric_precision": null,
+    "numeric_scale": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "products",
+    "column_name": "price",
+    "data_type": "numeric",
+    "udt_name": "numeric",
+    "character_maximum_length": null,
+    "numeric_precision": 10,
+    "numeric_scale": 2,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "products",
+    "column_name": "category_id",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_name": "products",
+    "column_name": "quantity",
+    "data_type": "integer",
+    "udt_name": "int4",
+    "character_maximum_length": null,
+    "numeric_precision": 32,
+    "numeric_scale": 0,
+    "is_nullable": "NO",
+    "column_default": "0"
+  }
+]

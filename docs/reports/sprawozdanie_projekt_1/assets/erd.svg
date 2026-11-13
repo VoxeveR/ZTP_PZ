@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1160" viewBox="0 0 1460 1160">
+    <rect width="1460" height="1160" fill="#F6F9FB"/>
+    <g font-family="Arial, sans-serif">
+    <text x="55" y="58" font-size="32" font-weight="700" fill="#17324D">Schemat ERD — tabele aplikacji</text>
+    <rect x="55" y="115" width="570" height="270" rx="12" fill="#fff" stroke="#96AABB" stroke-width="2"/>
+      <path d="M67,115 H613 Q625,115 625,127 V176 H55 V127 Q55,115 67,115" fill="#17324D"/>
+      <text x="75" y="155" fill="white" font-size="29" font-weight="700">categories</text>
+      <text x="75" y="215" font-size="23" fill="#243B50">PK id</text>
+        <text x="607" y="215" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="75" y="263" font-size="23" fill="#243B50">   name</text>
+        <text x="607" y="263" text-anchor="end" font-size="21" fill="#536375">VARCHAR(100)</text><text x="75" y="311" font-size="23" fill="#243B50">   min_price</text>
+        <text x="607" y="311" text-anchor="end" font-size="21" fill="#536375">NUMERIC(10,2)</text><text x="75" y="359" font-size="23" fill="#243B50">   max_price</text>
+        <text x="607" y="359" text-anchor="end" font-size="21" fill="#536375">NUMERIC(10,2)</text>
+    <rect x="835" y="115" width="570" height="318" rx="12" fill="#fff" stroke="#96AABB" stroke-width="2"/>
+      <path d="M847,115 H1393 Q1405,115 1405,127 V176 H835 V127 Q835,115 847,115" fill="#17324D"/>
+      <text x="855" y="155" fill="white" font-size="29" font-weight="700">products</text>
+      <text x="855" y="215" font-size="23" fill="#243B50">PK id</text>
+        <text x="1387" y="215" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="855" y="263" font-size="23" fill="#243B50">   name</text>
+        <text x="1387" y="263" text-anchor="end" font-size="21" fill="#536375">VARCHAR(20)</text><text x="855" y="311" font-size="23" fill="#243B50">   price</text>
+        <text x="1387" y="311" text-anchor="end" font-size="21" fill="#536375">NUMERIC(10,2)</text><text x="855" y="359" font-size="23" fill="#243B50">FK category_id</text>
+        <text x="1387" y="359" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="855" y="407" font-size="23" fill="#243B50">   quantity</text>
+        <text x="1387" y="407" text-anchor="end" font-size="21" fill="#536375">INTEGER</text>
+    <rect x="55" y="690" width="570" height="174" rx="12" fill="#fff" stroke="#96AABB" stroke-width="2"/>
+      <path d="M67,690 H613 Q625,690 625,702 V751 H55 V702 Q55,690 67,690" fill="#17324D"/>
+      <text x="75" y="730" fill="white" font-size="29" font-weight="700">forbidden_product_names</text>
+      <text x="75" y="790" font-size="23" fill="#243B50">PK id</text>
+        <text x="607" y="790" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="75" y="838" font-size="23" fill="#243B50">   name</text>
+        <text x="607" y="838" text-anchor="end" font-size="21" fill="#536375">VARCHAR(100)</text>
+    <rect x="835" y="690" width="570" height="366" rx="12" fill="#fff" stroke="#96AABB" stroke-width="2"/>
+      <path d="M847,690 H1393 Q1405,690 1405,702 V751 H835 V702 Q835,690 847,690" fill="#17324D"/>
+      <text x="855" y="730" fill="white" font-size="29" font-weight="700">product_history</text>
+      <text x="855" y="790" font-size="23" fill="#243B50">PK id</text>
+        <text x="1387" y="790" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="855" y="838" font-size="23" fill="#243B50">   product_id</text>
+        <text x="1387" y="838" text-anchor="end" font-size="21" fill="#536375">INTEGER</text><text x="855" y="886" font-size="23" fill="#243B50">   action</text>
+        <text x="1387" y="886" text-anchor="end" font-size="21" fill="#536375">VARCHAR(10)</text><text x="855" y="934" font-size="23" fill="#243B50">   previous_state</text>
+        <text x="1387" y="934" text-anchor="end" font-size="21" fill="#536375">JSONB</text><text x="855" y="982" font-size="23" fill="#243B50">   current_state</text>
+        <text x="1387" y="982" text-anchor="end" font-size="21" fill="#536375">JSONB</text><text x="855" y="1030" font-size="23" fill="#243B50">   changed_at</text>
+        <text x="1387" y="1030" text-anchor="end" font-size="21" fill="#536375">TIMESTAMPTZ</text>
+    <path d="M625 260 H835 M644 244 V276 M654 244 V276 M813 260 L835 244 M813 260 L835 276" fill="none" stroke="#007F87" stroke-width="4"/>
+    <text x="675" y="235" font-size="22" fill="#007F87">1 : N</text>
+    <text x="640" y="310" font-size="19" fill="#536375">category_id</text>
+    <text x="640" y="338" font-size="19" fill="#536375">FK / RESTRICT</text>
+    <path d="M1120 433 V690" fill="none" stroke="#B57B2E" stroke-width="4" stroke-dasharray="12 10"/>
+    <rect x="925" y="515" width="390" height="80" rx="8" fill="#FFF6E6"/>
+    <text x="1120" y="546" text-anchor="middle" font-size="22" fill="#885D22">products.id = product_history.product_id</text>
+    <text x="1120" y="576" text-anchor="middle" font-size="22" fill="#885D22">Powiązanie logiczne, bez FK</text>
+    <text x="55" y="1085" font-size="22" fill="#536375">PK — klucz główny. Wszystkie pokazane kolumny mają NOT NULL.</text>
+    <text x="55" y="1121" font-size="22" fill="#536375">Wygenerowano z information_schema po wykonaniu migracji projektu.</text>
+    </g></svg>
