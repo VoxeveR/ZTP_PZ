@@ -21,8 +21,8 @@
     "test:docker:build": "docker build --target test -t ztp-products-api-test .",
     "test:docker:run": "docker run --rm --network ztp_default --env DB_HOST=postgres --env NO_COLOR=1 ztp-products-api-test",
     "test:docker": "npm run test:docker:build && npm run test:docker:run",
-    "db:up": "docker compose up -d --wait",
-    "db:down": "docker compose down"
+    "db:up": "docker compose -f ../docker-compose.yml up -d --wait",
+    "db:down": "docker compose -f ../docker-compose.yml down"
   },
   "dependencies": {
     "@nestjs/common": "^12.1.3",

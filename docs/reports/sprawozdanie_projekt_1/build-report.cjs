@@ -7,7 +7,7 @@ const {
   HeadingLevel, AlignmentType, WidthType, Header, Footer, PageNumber,
   ExternalHyperlink, BorderStyle, ShadingType, VerticalAlign,
 } = require(path.join(deps, 'docx'));
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(__dirname, '..', '..', '..');
 const assets = path.join(__dirname, 'assets');
 const evidence = JSON.parse(fs.readFileSync(path.join(__dirname, 'evidence.json'), 'utf8'));
 const cases = Object.fromEntries(evidence.cases.map(c=>[c.key,c]));

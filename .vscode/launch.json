@@ -5,10 +5,10 @@
       "name": "Debug NestJS backend",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/dist/main.js",
-      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/backend/dist/main.js",
+      "cwd": "${workspaceFolder}/backend",
       "preLaunchTask": "Build NestJS backend",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"],
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal"
     }

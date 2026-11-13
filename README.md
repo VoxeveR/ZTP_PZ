@@ -1,24 +1,33 @@
-# ZTP_PZ – Products API
+# ZTP_PZ
 
-A REST API for managing products: create, read, update and delete, with input validation, categories and a transactional change history. Built for the ZTP course.
+Projects for the ZTP course. Currently a REST API for managing products: create, read, update and delete, with input validation, categories and a transactional change history. A frontend will be added later.
 
 **Stack:** Node.js 22+ · TypeScript · NestJS · TypeORM · PostgreSQL · Swagger (OpenAPI) · Docker
+
+```
+backend/             NestJS API
+docker-compose.yml   PostgreSQL (shared by the whole stack)
+docs/                acceptance criteria and lab reports
+```
 
 - API: `http://127.0.0.1:8000/api/v1/products`
 - Swagger UI: `http://127.0.0.1:8000/docs`
 
 ---
 
+All commands below are run in `backend/`.
+
 ## 1. Setup
 
 ```bash
+cd backend
 npm install
 cp .env.example .env
 ```
 
 ## 2. Database (PostgreSQL)
 
-The app and the tests both need PostgreSQL. It runs from `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
+The app and the tests both need PostgreSQL. It runs from the top-level `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
 
 ```bash
 npm run db:up      # start PostgreSQL and wait until it's healthy

@@ -5,6 +5,7 @@
       "label": "Build NestJS backend",
       "type": "npm",
       "script": "build",
+      "path": "backend",
       "group": { "kind": "build", "isDefault": true },
       "problemMatcher": ["$tsc"]
     }
