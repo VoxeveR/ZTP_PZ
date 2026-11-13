@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateProducts1790000000000 } from './migrations/1790000000000-create-products';
 import { ExtendProducts1790000001000 } from './migrations/1790000001000-extend-products';
 import { CreateProductHistory1790000002000 } from './migrations/1790000002000-create-product-history';
+import { CreateNotifications1790000003000 } from './migrations/1790000003000-create-notifications';
 
 @Module({
   imports: [
@@ -18,7 +19,12 @@ import { CreateProductHistory1790000002000 } from './migrations/1790000002000-cr
         password: config.getOrThrow<string>('DB_PASSWORD'),
         autoLoadEntities: true,
         synchronize: false,
-        migrations: [CreateProducts1790000000000, ExtendProducts1790000001000, CreateProductHistory1790000002000],
+        migrations: [
+          CreateProducts1790000000000,
+          ExtendProducts1790000001000,
+          CreateProductHistory1790000002000,
+          CreateNotifications1790000003000,
+        ],
         migrationsRun: true,
         retryAttempts: 3,
         retryDelay: 1000,
