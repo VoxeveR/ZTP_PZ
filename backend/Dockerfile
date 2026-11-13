@@ -21,6 +21,6 @@ CMD ["node", "dist/main.js"]
 
 FROM runtime AS test
 COPY --chown=node:node test ./test
-CMD ["node", "--test", "test/lifecycle.e2e.test.mjs", "test/products.e2e.test.mjs", "test/product-history.e2e.test.mjs"]
+CMD ["node", "--test", "test/lifecycle.e2e.test.mjs", "test/products.e2e.test.mjs", "test/product-history.e2e.test.mjs", "test/notifications.e2e.test.mjs"]
 
 FROM runtime AS production

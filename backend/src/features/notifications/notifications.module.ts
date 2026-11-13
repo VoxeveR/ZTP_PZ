@@ -5,10 +5,20 @@ import { NotificationsRepository } from './notifications.repository';
 import { NotificationsService } from './notifications.service';
 import { NotificationsController } from './notifications.controller';
 import { NotificationExceptionFilter } from './notification-exception.filter';
+import { NotificationDeliveryService } from './notification-delivery.service';
+import { NotificationDispatcher } from './notification-dispatcher';
+import { NotificationWorker } from './notification-worker';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Notification])],
   controllers: [NotificationsController],
-  providers: [NotificationsRepository, NotificationsService, NotificationExceptionFilter],
+  providers: [
+    NotificationsRepository,
+    NotificationsService,
+    NotificationExceptionFilter,
+    NotificationDeliveryService,
+    NotificationDispatcher,
+    NotificationWorker,
+  ],
 })
 export class NotificationsModule {}

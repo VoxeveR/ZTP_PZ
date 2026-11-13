@@ -14,9 +14,10 @@ To solve a whole lab, use the `/lab <N>` skill.
 - `LABS/`: teacher materials, local only
 
 ## Commands (run in `backend/`)
-- DB first: `npm run db:up` (Postgres via `../docker-compose.yml`, network `ztp_default`); `npm run db:down` to stop
+- Services first: `npm run db:up` (Postgres, MailHog, ntfy via `../docker-compose.yml`, network `ztp_default`);
+  `npm run db:down` to stop
 - Test: `npm test` (builds first; tests import from `dist/`)
-- Single file: `npm run test:products` / `test:history` / `test:lifecycle`
+- Single file: `npm run test:products` / `test:history` / `test:lifecycle` / `test:notifications`
 - Container tests: `npm run test:docker` (needs `db:up`)
 - Always run `npm run typecheck` and `npm run lint` after changes (`npm run lint:fix` fixes formatting)
 
@@ -50,6 +51,8 @@ To solve a whole lab, use the `/lab <N>` skill.
 - Tests create a random `ztp_test_*` DB per file and drop it, so never point them at `appdb`
 - 2 lifecycle tests skip on Windows (POSIX signals) and run only in Docker
 - `reject_history_write` errors in test logs are intentional (rollback test)
+- Notification tests really deliver through MailHog and ntfy, so those containers must be up
+- Config is read once per process: a second `createApplication()` in the same process ignores changed env vars
 
 ## Don't
 - Commit `.env`

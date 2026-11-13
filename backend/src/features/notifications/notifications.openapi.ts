@@ -13,6 +13,7 @@ import {
 import { NotificationCreateDto } from './notification-create.dto';
 import { NotificationResponseDto } from './notification-response.dto';
 import { NotificationStatusUpdateDto } from './notification-status-update.dto';
+import { ProcessReadyResponseDto } from './process-ready-response.dto';
 
 function ApiNotificationId() {
   return applyDecorators(
@@ -52,6 +53,30 @@ export function ApiCreateNotification() {
     ApiCreatedResponse({ type: NotificationResponseDto }),
     ApiBadRequestResponse({ description: 'Missing fields, wrong types, unknown channel or non-ISO date' }),
     ApiUnprocessableEntityResponse({ description: 'Empty content or recipient, invalid time zone, or a past date' }),
+  );
+}
+
+export function ApiSendNotificationNow() {
+  return applyDecorators(
+    ApiOperation({
+      summary: 'Send a notification now',
+      description:
+        'Executes a PENDING notification immediately, regardless of scheduledAt. The channel is chosen by the dispatcher (EMAIL → MailHog, PUSH → ntfy). The result is SENT, or FAILED if delivery fails.',
+    }),
+    ApiNotificationId(),
+    ApiOkResponse({ type: NotificationResponseDto }),
+    ApiUnprocessableEntityResponse({ description: 'Notification is not PENDING' }),
+  );
+}
+
+export function ApiProcessReadyNotifications() {
+  return applyDecorators(
+    ApiOperation({
+      summary: 'Process all due notifications',
+      description:
+        'Batch run of what the background worker does: executes every PENDING notification whose scheduledAt has passed.',
+    }),
+    ApiOkResponse({ type: ProcessReadyResponseDto }),
   );
 }
 

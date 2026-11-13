@@ -5,6 +5,7 @@ import { CreateProducts1790000000000 } from './migrations/1790000000000-create-p
 import { ExtendProducts1790000001000 } from './migrations/1790000001000-extend-products';
 import { CreateProductHistory1790000002000 } from './migrations/1790000002000-create-product-history';
 import { CreateNotifications1790000003000 } from './migrations/1790000003000-create-notifications';
+import { IndexReadyNotifications1790000004000 } from './migrations/1790000004000-index-ready-notifications';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CreateNotifications1790000003000 } from './migrations/1790000003000-cre
           ExtendProducts1790000001000,
           CreateProductHistory1790000002000,
           CreateNotifications1790000003000,
+          IndexReadyNotifications1790000004000,
         ],
         migrationsRun: true,
         retryAttempts: 3,

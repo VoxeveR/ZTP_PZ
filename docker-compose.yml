@@ -18,5 +18,20 @@ services:
       timeout: 5s
       retries: 10
 
+  # Notification channels for testing (from the lab 2.2 compose file).
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog_ztp
+    ports:
+      - "8025:8025" # UI and API
+      - "1025:1025" # SMTP
+
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy_ztp
+    command: serve
+    ports:
+      - "8088:80"
+
 volumes:
   pgdata:

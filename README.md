@@ -1,17 +1,18 @@
 # ZTP_PZ
 
-Projects for the ZTP course. Currently a REST API for managing products: create, read, update and delete, with input validation, categories and a transactional change history. A frontend will be added later.
+Projects for the ZTP course. Currently a REST API for managing products (create, read, update and delete, with input validation, categories and a transactional change history) and for scheduled notifications, which a background worker sends by e-mail or push. A frontend will be added later.
 
 **Stack:** Node.js 22+ · TypeScript · NestJS · TypeORM · PostgreSQL · Swagger (OpenAPI) · Docker
 
 ```
 backend/             NestJS API
-docker-compose.yml   PostgreSQL (shared by the whole stack)
+docker-compose.yml   PostgreSQL, MailHog and ntfy (shared by the whole stack)
 docs/                acceptance criteria and lab reports
 ```
 
-- API: `http://127.0.0.1:8000/api/v1/products`
-- Swagger UI: `http://127.0.0.1:8000/docs`
+- API: `http://127.0.0.1:8000/api/v1/products`, `http://127.0.0.1:8000/api/v1/notifications`
+- Swagger UI: `/docs` (everything), `/products-docs`, `/notifications-docs`
+- Sent notifications: MailHog `http://localhost:8025`, ntfy `http://localhost:8088/<topic>`
 
 ---
 
@@ -38,13 +39,13 @@ npm run lint:fix         # fix what can be fixed automatically
 npm run format           # Prettier only
 ```
 
-## 2. Database (PostgreSQL)
+## 2. Services (PostgreSQL, MailHog, ntfy)
 
-The app and the tests both need PostgreSQL. It runs from the top-level `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
+The app and the tests need PostgreSQL, plus MailHog (e-mail) and ntfy (push) for sending notifications. They run from the top-level `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
 
 ```bash
-npm run db:up      # start PostgreSQL and wait until it's healthy
-npm run db:down    # stop it (data stays in the ztp_pgdata volume)
+npm run db:up      # start all services and wait until they're ready
+npm run db:down    # stop them (data stays in the ztp_pgdata volume)
 ```
 
 ## 3. Run locally
@@ -65,13 +66,14 @@ docker run --rm -p 8000:8000 --network ztp_default -e DB_HOST=postgres ztp-produ
 
 The tests are end-to-end tests that use `node --test`. Each test file creates its own temporary database and drops it afterwards.
 
-**Locally** (needs PostgreSQL from step 2):
+**Locally** (needs the services from step 2):
 
 ```bash
-npm test                 # all tests
-npm run test:products    # products CRUD
-npm run test:history     # product history
-npm run test:lifecycle   # app lifecycle
+npm test                    # all tests
+npm run test:products       # products CRUD
+npm run test:history        # product history
+npm run test:lifecycle      # app lifecycle
+npm run test:notifications  # notifications: POST, GET, send-now, validation, process-ready
 npm run typecheck        # TypeScript check
 ```
 

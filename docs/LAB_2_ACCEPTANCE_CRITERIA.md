@@ -34,3 +34,24 @@ Przykładowe żądanie (Swagger: http://127.0.0.1:8000/notifications-docs):
 ```
 
 Odpowiedź zawiera `"scheduledAt": "2027-01-15T08:00:00.000Z"` i `"status": "PENDING"`. Nazwy pól są w camelCase, tak jak w API produktów (`categoryId`), a nie w snake_case jak w przykładzie z instrukcji.
+
+## Etap 2.2
+
+| Wymaganie | Gdzie pokazać | Konkretna funkcja / element |
+| --- | --- | --- |
+| Kontenery MailHog i ntfy | [docker-compose.yml](../docker-compose.yml) | Usługi `mailhog` (UI http://localhost:8025, SMTP 1025) i `ntfy` (http://localhost:8088) przeniesione bez zmian z `docker-compose.yml` etapu 2.2. Startują razem z bazą: `npm run db:up`. |
+| Konfiguracja kanałów i workera | [environment.ts](../backend/src/config/environment.ts), [.env.example](../backend/.env.example) | `validateEnvironment()` dodaje `SMTP_HOST`, `SMTP_PORT`, `MAIL_FROM`, `NTFY_URL`, `NOTIFICATION_WORKER_ENABLED`, `NOTIFICATION_WORKER_INTERVAL_MS` (domyślnie 5000 ms). |
+| Delivery: kanał EMAIL (MailHog) | [notification-delivery.service.ts](../backend/src/features/notifications/notification-delivery.service.ts) | `NotificationDeliveryService.sendEmail()` wysyła wiadomość przez SMTP (nodemailer) na MailHog. |
+| Delivery: kanał PUSH (ntfy) | Ten sam plik | `sendPush()` wykonuje `POST` na `NTFY_URL/<recipient>`; `recipient` jest nazwą topicu. Odpowiedź inna niż 2xx lub przekroczenie 5 s jest błędem. |
+| Dispatcher wybierający kanał | [notification-dispatcher.ts](../backend/src/features/notifications/notification-dispatcher.ts) | `NotificationDispatcher.dispatch()`: `switch` po `channel` → `sendEmail()` lub `sendPush()`; nieznany kanał rzuca błąd. |
+| Wykonanie pojedynczego powiadomienia | [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts) | `execute()`: `dispatcher.dispatch()`, potem status `SENT`, a przy błędzie `FAILED` (przejście sprawdza `canTransition()`), zapis w tej samej transakcji. |
+| `POST /api/v1/notifications/{id}/send-now` | [notifications.controller.ts](../backend/src/features/notifications/notifications.controller.ts), [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts), [notifications.repository.ts](../backend/src/features/notifications/notifications.repository.ts) | `sendNow()` w kontrolerze → `sendNow()` w serwisie → `findById(id, manager, 'wait')` (blokada wiersza) → `execute()`. Sukces: 200 i `SENT`/`FAILED`; status inny niż `PENDING`: 422; brak rekordu: 404. |
+| `POST /api/v1/notifications/process-ready` | Te same trzy pliki | `processReady()` w kontrolerze → `processReady()` w serwisie → `findReadyIds()` (status `PENDING` i `scheduled_at <= now`), potem dla każdego `findById(id, manager, 'skip')` i `execute()`. Odpowiedź: `{ "processedCount": n }`. |
+| Worker cykliczny w tle aplikacji | [notification-worker.ts](../backend/src/features/notifications/notification-worker.ts), [notifications.module.ts](../backend/src/features/notifications/notifications.module.ts) | `NotificationWorker.onApplicationBootstrap()` uruchamia pętlę `setTimeout` co `NOTIFICATION_WORKER_INTERVAL_MS`; `run()` wywołuje `processReady()`. Kolejny przebieg startuje dopiero po zakończeniu poprzedniego. `onModuleDestroy()` zatrzymuje pętlę i czeka na trwający przebieg przed zamknięciem bazy. |
+| Brak podwójnej wysyłki | [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts), [notifications.repository.ts](../backend/src/features/notifications/notifications.repository.ts) | Wysyłka odbywa się przy zablokowanym wierszu (`SELECT ... FOR UPDATE`). Worker używa `SKIP LOCKED`, więc pomija rekord obsługiwany właśnie przez `send-now`, i ponownie sprawdza status `PENDING`. |
+| Indeks dla zapytania workera | [1790000004000-index-ready-notifications.ts](../backend/src/infrastructure/database/migrations/1790000004000-index-ready-notifications.ts) | Indeks częściowy `notifications_pending_scheduled_idx` na `(scheduled_at, id)` dla `status = 'PENDING'`. |
+| Testy integracyjne (POST, GET, send-now, walidacja, process-ready) | [notifications.e2e.test.mjs](../backend/test/notifications.e2e.test.mjs) | 8 testów na osobnej bazie `ztp_test_<UUID>`: lista, POST z konwersją do UTC, 404/400, walidacja (422/400), `send-now` PUSH i EMAIL z odczytem wiadomości z ntfy i MailHog, ponowny `send-now` → 422, `process-ready` wysyła tylko zaległe `PENDING`. Worker jest w tym pliku wyłączony. |
+
+Warto powiedzieć: „Worker robi cyklicznie to samo co `process-ready`. Wysyłka trwa przy zablokowanym wierszu, więc nawet gdy `send-now` i worker trafią na to samo powiadomienie, zostanie ono wysłane tylko raz”.
+
+Podgląd wysłanych wiadomości: MailHog http://localhost:8025, ntfy http://localhost:8088/<topic> (np. `test`).

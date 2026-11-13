@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, UseFilters } from '@nestjs/common';
+import { ProcessReadyResponseDto } from './process-ready-response.dto';
 import { NotificationsService } from './notifications.service';
 import { NotificationCreateDto } from './notification-create.dto';
 import { NotificationResponseDto } from './notification-response.dto';
@@ -10,6 +11,8 @@ import {
   ApiGetNotification,
   ApiListNotifications,
   ApiNotifications,
+  ApiProcessReadyNotifications,
+  ApiSendNotificationNow,
   ApiUpdateNotificationStatus,
 } from './notifications.openapi';
 
@@ -23,6 +26,20 @@ export class NotificationsController {
   @ApiCreateNotification()
   create(@Body() payload: NotificationCreateDto): Promise<NotificationResponseDto> {
     return this.notifications.create(payload);
+  }
+
+  @Post('process-ready')
+  @HttpCode(HttpStatus.OK)
+  @ApiProcessReadyNotifications()
+  async processReady(): Promise<ProcessReadyResponseDto> {
+    return { processedCount: await this.notifications.processReady() };
+  }
+
+  @Post(':id/send-now')
+  @HttpCode(HttpStatus.OK)
+  @ApiSendNotificationNow()
+  sendNow(@Param('id', NotificationIdPipe) id: number): Promise<NotificationResponseDto> {
+    return this.notifications.sendNow(id);
   }
 
   @Get()
