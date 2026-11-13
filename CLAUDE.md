@@ -9,12 +9,13 @@ To solve a whole lab, use the `/lab <N>` skill.
 
 ## Layout
 - `backend/`: NestJS API (its own `package.json`, `Dockerfile`, `src/`, `test/`)
-- `docker-compose.yml`: shared services for the whole stack (PostgreSQL now, a frontend later)
+- `docker-compose.yml`: shared services for the whole stack (PostgreSQL, MailHog, ntfy, Prometheus; a frontend later)
+- `.config/prometheus.yml`: Prometheus scrape config (targets the API on host port 8000)
 - `docs/`: per-lab acceptance criteria (`LAB_<N>_ACCEPTANCE_CRITERIA.md`) and reports (`reports/`)
 - `LABS/`: teacher materials, local only
 
 ## Commands (run in `backend/`)
-- Services first: `npm run db:up` (Postgres, MailHog, ntfy via `../docker-compose.yml`, network `ztp_default`);
+- Services first: `npm run db:up` (Postgres, MailHog, ntfy, Prometheus via `../docker-compose.yml`, network `ztp_default`);
   `npm run db:down` to stop
 - Test: `npm test` (builds first; tests import from `dist/`)
 - Single file: `npm run test:products` / `test:history` / `test:lifecycle` / `test:notifications`
@@ -42,7 +43,8 @@ To solve a whole lab, use the `/lab <N>` skill.
 - A product write and its history entry go in one transaction (`repository.transaction(...)`).
 - Domain errors are thrown by the service and mapped in the feature's exception filter: validation 422,
   conflict 409, missing related entity 400, not found 404. Malformed body or missing fields: 400.
-- All routes go under the `api/v1` prefix and need Swagger decorators.
+- All routes go under the `api/v1` prefix and need Swagger decorators. Only exception: `/metrics` (Prometheus
+  default path), excluded in `app.ts`.
 - Add tests only when the lab instruction asks for them. When it does, put them in `backend/test/*.e2e.test.mjs`
   and use `prepareTestDatabase()`. Existing tests must always keep passing.
 - Code and identifiers are in English. Acceptance criteria and reports are in Polish.

@@ -3,10 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, LessThanOrEqual, Repository } from 'typeorm';
 import { Notification } from './notification.entity';
 import { NotificationStatus } from './notification-status';
+import { NotificationChannel } from './notification-channel';
+
+export interface NotificationCount {
+  status: NotificationStatus;
+  channel: NotificationChannel;
+  count: number;
+}
 
 export type NotificationValues = Pick<
   Notification,
-  'content' | 'channel' | 'recipient' | 'scheduledAt' | 'timezone' | 'status'
+  'content' | 'channel' | 'recipient' | 'scheduledAt' | 'timezone' | 'status' | 'idempotencyKey'
 >;
 
 @Injectable()
@@ -28,6 +35,23 @@ export class NotificationsRepository {
       where: { id },
       lock: { mode: 'pessimistic_write', onLocked: lock === 'skip' ? 'skip_locked' : undefined },
     });
+  }
+
+  findByIdempotencyKey(idempotencyKey: string): Promise<Notification | null> {
+    return this.notifications.findOne({ where: { idempotencyKey } });
+  }
+
+  /** One row per (status, channel) pair that has notifications; used by /metrics. */
+  async countByStatusAndChannel(): Promise<NotificationCount[]> {
+    const rows = await this.notifications
+      .createQueryBuilder('notification')
+      .select('notification.status', 'status')
+      .addSelect('notification.channel', 'channel')
+      .addSelect('COUNT(*)::int', 'count')
+      .groupBy('notification.status')
+      .addGroupBy('notification.channel')
+      .getRawMany<NotificationCount>();
+    return rows;
   }
 
   async findReadyIds(now: Date): Promise<number[]> {

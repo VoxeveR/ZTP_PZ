@@ -8,3 +8,4 @@ export class NotificationDomainError extends Error {
 export class NotificationValidationError extends NotificationDomainError {}
 export class NotificationTransitionError extends NotificationDomainError {}
 export class NotificationNotFoundError extends NotificationDomainError {}
+export class NotificationConflictError extends NotificationDomainError {}

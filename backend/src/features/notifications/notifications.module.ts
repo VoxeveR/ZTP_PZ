@@ -8,10 +8,11 @@ import { NotificationExceptionFilter } from './notification-exception.filter';
 import { NotificationDeliveryService } from './notification-delivery.service';
 import { NotificationDispatcher } from './notification-dispatcher';
 import { NotificationWorker } from './notification-worker';
+import { NotificationsMetricsController } from './notifications-metrics.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Notification])],
-  controllers: [NotificationsController],
+  controllers: [NotificationsController, NotificationsMetricsController],
   providers: [
     NotificationsRepository,
     NotificationsService,

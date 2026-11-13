@@ -27,6 +27,12 @@ export class NotificationResponseDto {
 
   @ApiProperty({ example: '2026-11-13T12:00:00.000Z' })
   createdAt!: string;
+
+  @ApiProperty({
+    example: 'notif_q3KZx1m0bFJ8vYpTn4c2Rw7sHd9LuE6a',
+    description: 'Technical operation ID: the Idempotency-Key header if the client sent one, otherwise generated.',
+  })
+  idempotencyKey!: string;
 }
 
 export function toNotificationResponse(notification: Notification): NotificationResponseDto {
@@ -39,5 +45,6 @@ export function toNotificationResponse(notification: Notification): Notification
     timezone: notification.timezone,
     status: notification.status,
     createdAt: notification.createdAt.toISOString(),
+    idempotencyKey: notification.idempotencyKey,
   };
 }

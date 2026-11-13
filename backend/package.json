@@ -24,6 +24,7 @@
     "test:docker": "npm run test:docker:build && npm run test:docker:run",
     "db:up": "docker compose -f ../docker-compose.yml up -d --wait",
     "db:down": "docker compose -f ../docker-compose.yml down",
+    "notifications:seed": "node scripts/seed-notifications.mjs",
     "lint": "eslint \"{src,test}/**/*.{ts,mjs}\"",
     "lint:fix": "eslint \"{src,test}/**/*.{ts,mjs}\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.mjs\""

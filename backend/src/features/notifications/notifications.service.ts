@@ -1,5 +1,7 @@
+import { randomBytes } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
+import { EntityManager, QueryFailedError } from 'typeorm';
+import { NotificationChannel } from './notification-channel';
 import { NotificationsRepository } from './notifications.repository';
 import { NotificationDispatcher } from './notification-dispatcher';
 import { Notification } from './notification.entity';
@@ -9,10 +11,25 @@ import { NotificationStatus } from './notification-status';
 import { canTransition } from './notification-state-machine';
 import { isValidTimezone, toUtc } from './notification-time';
 import {
+  NotificationConflictError,
   NotificationNotFoundError,
   NotificationTransitionError,
   NotificationValidationError,
 } from './notification.errors';
+
+export interface NotificationCreateResult {
+  notification: NotificationResponseDto;
+  /** True when an Idempotency-Key matched an earlier request and nothing new was created. */
+  replayed: boolean;
+}
+
+export function generateIdempotencyKey(): string {
+  return `notif_${randomBytes(24).toString('base64url')}`;
+}
+
+function isUniqueViolation(error: unknown): boolean {
+  return error instanceof QueryFailedError && (error.driverError as { code?: string }).code === '23505';
+}
 
 @Injectable()
 export class NotificationsService {
@@ -34,18 +51,82 @@ export class NotificationsService {
     return toNotificationResponse(notification);
   }
 
-  async create(payload: NotificationCreateDto): Promise<NotificationResponseDto> {
+  /**
+   * Creates a PENDING notification. With a client Idempotency-Key, a repeated request returns the
+   * notification created by the first one (`replayed: true`) instead of creating another.
+   */
+  async create(payload: NotificationCreateDto, idempotencyKey?: string): Promise<NotificationCreateResult> {
+    if (idempotencyKey) {
+      const existing = await this.notifications.findByIdempotencyKey(idempotencyKey);
+      if (existing) return this.replay(existing, payload);
+    }
     const scheduledAt = this.validate(payload);
-    const notification = await this.notifications.create({
-      content: payload.content,
-      channel: payload.channel,
-      recipient: payload.recipient,
-      scheduledAt,
-      timezone: payload.timezone,
-      status: NotificationStatus.PENDING,
-    });
-    this.logger.log(`Created notification with ID ${notification.id} scheduled at ${scheduledAt.toISOString()}`);
-    return toNotificationResponse(notification);
+    try {
+      const notification = await this.notifications.create({
+        content: payload.content,
+        channel: payload.channel,
+        recipient: payload.recipient,
+        scheduledAt,
+        timezone: payload.timezone,
+        status: NotificationStatus.PENDING,
+        idempotencyKey: idempotencyKey ?? generateIdempotencyKey(),
+      });
+      this.logger.log(`Created notification with ID ${notification.id} scheduled at ${scheduledAt.toISOString()}`);
+      return { notification: toNotificationResponse(notification), replayed: false };
+    } catch (error) {
+      // Two requests with the same key passed the lookup at once: the one that lost the insert replays the winner.
+      if (idempotencyKey && isUniqueViolation(error)) {
+        const existing = await this.notifications.findByIdempotencyKey(idempotencyKey);
+        if (existing) return this.replay(existing, payload);
+      }
+      throw error;
+    }
+  }
+
+  /** Prometheus text format: totals per status and counts per status and channel (zeros included). */
+  async metrics(): Promise<string> {
+    const counts = await this.notifications.countByStatusAndChannel();
+    const count = (status: NotificationStatus, channel?: NotificationChannel) =>
+      counts
+        .filter((row) => row.status === status && (!channel || row.channel === channel))
+        .reduce((sum, row) => sum + row.count, 0);
+
+    const lines: string[] = [];
+    for (const status of Object.values(NotificationStatus)) {
+      const name = `notifications_${status.toLowerCase()}_total`;
+      lines.push(
+        `# HELP ${name} Number of ${status.toLowerCase()} notifications`,
+        `# TYPE ${name} gauge`,
+        `${name} ${count(status)}`,
+      );
+    }
+    lines.push(
+      '# HELP notifications_by_channel Number of notifications by status and channel',
+      '# TYPE notifications_by_channel gauge',
+    );
+    for (const status of Object.values(NotificationStatus)) {
+      for (const channel of Object.values(NotificationChannel)) {
+        lines.push(`notifications_by_channel{status="${status}",channel="${channel}"} ${count(status, channel)}`);
+      }
+    }
+    return `${lines.join('\n')}\n`;
+  }
+
+  private replay(existing: Notification, payload: NotificationCreateDto): NotificationCreateResult {
+    const scheduledAt = toUtc(payload.scheduledAt, payload.timezone);
+    const sameRequest =
+      existing.content === payload.content &&
+      existing.channel === payload.channel &&
+      existing.recipient === payload.recipient &&
+      existing.timezone === payload.timezone &&
+      scheduledAt?.getTime() === existing.scheduledAt.getTime();
+    if (!sameRequest) {
+      throw new NotificationConflictError(
+        `Idempotency-Key ${existing.idempotencyKey} was already used for a different notification (ID ${existing.id})`,
+      );
+    }
+    this.logger.log(`Idempotent replay: returning notification ${existing.id}`);
+    return { notification: toNotificationResponse(existing), replayed: true };
   }
 
   async updateStatus(id: number, status: NotificationStatus): Promise<NotificationResponseDto> {

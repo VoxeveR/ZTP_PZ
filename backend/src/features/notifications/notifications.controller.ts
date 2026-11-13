@@ -1,5 +1,18 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, UseFilters } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Res,
+  UseFilters,
+} from '@nestjs/common';
 import { ProcessReadyResponseDto } from './process-ready-response.dto';
+import { parseIdempotencyKey } from './idempotency-key';
 import { NotificationsService } from './notifications.service';
 import { NotificationCreateDto } from './notification-create.dto';
 import { NotificationResponseDto } from './notification-response.dto';
@@ -16,6 +29,12 @@ import {
   ApiUpdateNotificationStatus,
 } from './notifications.openapi';
 
+// The two response methods used for an idempotent replay (Express response).
+interface ReplayableResponse {
+  status(code: number): unknown;
+  setHeader(name: string, value: string): unknown;
+}
+
 @ApiNotifications()
 @Controller('notifications')
 @UseFilters(NotificationExceptionFilter)
@@ -24,8 +43,17 @@ export class NotificationsController {
 
   @Post()
   @ApiCreateNotification()
-  create(@Body() payload: NotificationCreateDto): Promise<NotificationResponseDto> {
-    return this.notifications.create(payload);
+  async create(
+    @Body() payload: NotificationCreateDto,
+    @Headers('idempotency-key') idempotencyKeyHeader: string | undefined,
+    @Res({ passthrough: true }) response: ReplayableResponse,
+  ): Promise<NotificationResponseDto> {
+    const result = await this.notifications.create(payload, parseIdempotencyKey(idempotencyKeyHeader));
+    if (result.replayed) {
+      response.status(HttpStatus.OK);
+      response.setHeader('Idempotent-Replayed', 'true');
+    }
+    return result.notification;
   }
 
   @Post('process-ready')

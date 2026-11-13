@@ -55,3 +55,97 @@ Odpowiedź zawiera `"scheduledAt": "2027-01-15T08:00:00.000Z"` i `"status": "PEN
 Warto powiedzieć: „Worker robi cyklicznie to samo co `process-ready`. Wysyłka trwa przy zablokowanym wierszu, więc nawet gdy `send-now` i worker trafią na to samo powiadomienie, zostanie ono wysłane tylko raz”.
 
 Podgląd wysłanych wiadomości: MailHog http://localhost:8025, ntfy http://localhost:8088/<topic> (np. `test`).
+
+## Etap 2.3
+
+| Wymaganie | Gdzie pokazać | Konkretna funkcja / element |
+| --- | --- | --- |
+| Pole `idempotency_key` w modelu | [1790000005000-add-notification-idempotency-key.ts](../backend/src/infrastructure/database/migrations/1790000005000-add-notification-idempotency-key.ts), [notification.entity.ts](../backend/src/features/notifications/notification.entity.ts) | `AddNotificationIdempotencyKey1790000005000.up()` dodaje kolumnę `idempotency_key VARCHAR(255) NOT NULL UNIQUE`; istniejącym rekordom nadaje klucze `notif_<uuid>`. Encja: `Notification.idempotencyKey`. |
+| Klucz generowany przez serwer, zwracany w odpowiedzi | [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts), [notification-response.dto.ts](../backend/src/features/notifications/notification-response.dto.ts) | `generateIdempotencyKey()` zwraca `notif_` + 24 losowe bajty (base64url), jak `secrets.token_urlsafe(24)` w instrukcji. `NotificationCreateDto` nie zawiera klucza, a `NotificationResponseDto.idempotencyKey` go zwraca. |
+| Ponowienie żądania nie tworzy nowego rekordu | [notifications.controller.ts](../backend/src/features/notifications/notifications.controller.ts), [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts), [idempotency-key.ts](../backend/src/features/notifications/idempotency-key.ts) | Opcjonalny nagłówek `Idempotency-Key`: `create()` w kontrolerze → `create(payload, key)` w serwisie → `findByIdempotencyKey()`. Ten sam klucz i te same dane: 200 z istniejącym powiadomieniem i nagłówkiem `Idempotent-Replayed: true`. Ten sam klucz, inne dane: 409. Niepoprawny klucz: 400. Równoczesne żądania rozstrzyga ograniczenie `UNIQUE` (`replay()` po błędzie 23505). |
+| Endpoint `/metrics` w formacie Prometheus | [notifications-metrics.controller.ts](../backend/src/features/notifications/notifications-metrics.controller.ts), [notifications.service.ts](../backend/src/features/notifications/notifications.service.ts), [notifications.repository.ts](../backend/src/features/notifications/notifications.repository.ts), [app.ts](../backend/src/app.ts) | `GET /metrics`, poza prefiksem `/api/v1` (`setGlobalPrefix(..., { exclude: ['metrics'] })`): `NotificationsMetricsController.metrics()` → `NotificationsService.metrics()` → `countByStatusAndChannel()` (jedno zapytanie `GROUP BY status, channel`). Metryki: `notifications_{sent,failed,pending,cancelled}_total` i `notifications_by_channel{status,channel}`, także z zerami. |
+| Integracja z Prometheusem | [docker-compose.yml](../docker-compose.yml), [prometheus.yml](../.config/prometheus.yml) | Usługa `prometheus` (http://localhost:9090) z `docker-compose.yml` etapu 2.3; dodano `extra_hosts`, by `host.docker.internal` działał też na Linuksie. `prometheus.yml` z etapu 2.3: scrape co 5 s celu `host.docker.internal:8000`; zmieniona tylko nazwa joba (`nestjs_notifications`). |
+| Przykładowe powiadomienia do obserwacji metryk | [seed-notifications.mjs](../backend/scripts/seed-notifications.mjs) | `npm run notifications:seed` tworzy przez API 8 powiadomień: 5 z terminem za 10–35 s (EMAIL i PUSH), 1 PUSH na niepoprawny topic (→ `FAILED`), 1 na za godzinę (`PENDING`), 1 anulowane (`CANCELLED`). Wysyła też jedno żądanie dwa razy z tym samym `Idempotency-Key` (201, potem 200). W ciągu minuty worker zmienia wartości metryk. |
+
+Warto powiedzieć: „Klucz z instrukcji jest generowany po stronie serwera, więc sam nie chroni przed ponowieniem żądania. Dlatego klient może przekazać własny klucz w nagłówku `Idempotency-Key`: to samo żądanie z tym samym kluczem zwraca istniejące powiadomienie, zamiast tworzyć drugie”.
+
+Zapytania do sprawdzenia w Prometheusie (zakładki Table i Graph): `notifications_pending_total`, `notifications_sent_total`, `notifications_cancelled_total`, `notifications_by_channel`, `notifications_by_channel{status="SENT"}`.
+
+## Uruchomienie aplikacji do prezentacji
+
+PowerShell, początkowo katalog główny `ZTP`:
+
+```powershell
+cd backend
+npm ci
+npm run db:up
+npm run start:dev
+```
+
+`npm run db:up` uruchamia PostgreSQL, MailHog, ntfy i Prometheusa. Migracje wykonują się przy starcie aplikacji, a worker zaczyna działać razem z nią.
+
+| Adres | Zawartość |
+| --- | --- |
+| http://127.0.0.1:8000/docs | Pełna dokumentacja API |
+| http://127.0.0.1:8000/products-docs | Dokumentacja produktów i historii |
+| http://127.0.0.1:8000/notifications-docs | Dokumentacja powiadomień |
+| http://127.0.0.1:8000/metrics | Metryki w formacie Prometheus |
+| http://localhost:8025 | MailHog: wysłane e-maile |
+| http://localhost:8088/ztp-demo | ntfy: powiadomienia PUSH z przykładowych danych |
+| http://localhost:9090 | Prometheus |
+
+Przykładowe dane do obserwacji metryk, w drugim terminalu w `ZTP/backend`, przy działającej aplikacji:
+
+```powershell
+npm run notifications:seed
+```
+
+Podgląd tabeli powiadomień, z katalogu głównego `ZTP`:
+
+```powershell
+docker compose exec postgres psql -U appuser -d appdb -c "SELECT id, channel, recipient, scheduled_at, timezone, status, idempotency_key FROM notifications ORDER BY id;"
+```
+
+## Testy naszej aplikacji — skrypty package.json
+
+Wszystkie poniższe komendy wykonuj w `ZTP/backend`, po `npm ci` i `npm run db:up`.
+
+| Komenda | Zakres |
+| --- | --- |
+| `npm test` lub `npm run test:all` | Wszystkie testy NestJS: produkty, historia, lifecycle i powiadomienia. |
+| `npm run test:notifications` | Testy integracyjne etapu 2.2: POST z konwersją do UTC, GET, 404/400, walidacja, `send-now` PUSH i EMAIL z odczytem wiadomości z ntfy i MailHog, ponowny `send-now` → 422, `process-ready`. |
+| `npm run test:products` | CRUD produktów, walidacje, Swagger i CORS. |
+| `npm run test:history` | Historia zmian produktów i rollback. |
+| `npm run test:lifecycle` | Zamykanie HTTP i puli bazy oraz sygnały systemowe. |
+| `npm run test:docker` | Cały zestaw w kontenerze z Linuksem, w sieci `ztp_default` (baza, MailHog i ntfy po nazwach usług). |
+
+Każdy plik testów tworzy własną bazę `ztp_test_<UUID>` i ją usuwa, więc `appdb` pozostaje bez zmian. Testy powiadomień wymagają działających kontenerów MailHog i ntfy. W pliku testów powiadomień worker jest wyłączony, żeby nie konkurował z jawnymi wywołaniami `process-ready`.
+
+## Oryginalne testy Python od prowadzącej
+
+[test_notifications.py](../LABS/LAB2/2.2/tests/test_notifications.py) i [test_students_api.py](../LABS/LAB2/2.2/tests/test_students_api.py) testują **FastAPI i studentów** z kodu prowadzącej, a nie naszą aplikację NestJS. Uruchamiamy je z katalogu `2.2`. W `2.3` plik `main.py` dołącza routery bez prefiksu `/api/v1` (żeby `/metrics` był pod adresem głównym), a testy nadal wywołują `/api/v1/...`, więc tam wszystkie 14 testów kończy się kodem 404. Pliki testów w `2.2` i `2.3` są identyczne.
+
+Dla oryginalnych testów dodany jest osobny [docker-compose.tests.yml](../LABS/LAB2/2.2/docker-compose.tests.yml): baza z SQL-em prowadzącej na porcie **5433**, z danymi w pamięci. MailHog i ntfy pochodzą z naszego `docker-compose.yml` (porty 1025 i 8088, których oczekuje kod prowadzącej), więc najpierw trzeba wykonać `npm run db:up` w `ZTP/backend`.
+
+PowerShell, od katalogu głównego `ZTP`:
+
+```powershell
+cd LABS/LAB2/2.2
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r .\requirements.txt
+docker compose -p ztp-lab22-tests -f .\docker-compose.tests.yml up -d --wait
+
+$env:DB_HOST = '127.0.0.1'
+$env:DB_PORT = '5433'
+
+.\.venv\Scripts\python.exe -m pytest -v .\tests
+```
+
+Wynik sprawdzony 14.11.2026: 14 passed. Testy `send-now` faktycznie wysyłają wiadomości do MailHog i ntfy.
+
+Po zakończeniu, nadal w `ZTP/LABS/LAB2/2.2`:
+
+```powershell
+docker compose -p ztp-lab22-tests -f .\docker-compose.tests.yml down
+Remove-Item Env:DB_HOST, Env:DB_PORT
+```

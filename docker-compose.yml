@@ -33,5 +33,16 @@ services:
     ports:
       - "8088:80"
 
+  # Metrics scraping (from the lab 2.3 compose file). UI: http://localhost:9090
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_ztp
+    volumes:
+      - ./.config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 volumes:
   pgdata:

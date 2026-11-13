@@ -6,13 +6,15 @@ Projects for the ZTP course. Currently a REST API for managing products (create,
 
 ```
 backend/             NestJS API
-docker-compose.yml   PostgreSQL, MailHog and ntfy (shared by the whole stack)
+docker-compose.yml   PostgreSQL, MailHog, ntfy and Prometheus (shared by the whole stack)
+.config/             Prometheus configuration
 docs/                acceptance criteria and lab reports
 ```
 
 - API: `http://127.0.0.1:8000/api/v1/products`, `http://127.0.0.1:8000/api/v1/notifications`
 - Swagger UI: `/docs` (everything), `/products-docs`, `/notifications-docs`
 - Sent notifications: MailHog `http://localhost:8025`, ntfy `http://localhost:8088/<topic>`
+- Metrics: `http://127.0.0.1:8000/metrics` (Prometheus format), Prometheus UI `http://localhost:9090`
 
 ---
 
@@ -39,9 +41,9 @@ npm run lint:fix         # fix what can be fixed automatically
 npm run format           # Prettier only
 ```
 
-## 2. Services (PostgreSQL, MailHog, ntfy)
+## 2. Services (PostgreSQL, MailHog, ntfy, Prometheus)
 
-The app and the tests need PostgreSQL, plus MailHog (e-mail) and ntfy (push) for sending notifications. They run from the top-level `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
+The app and the tests need PostgreSQL, plus MailHog (e-mail) and ntfy (push) for sending notifications. Prometheus scrapes `/metrics` from the app on port 8000. They run from the top-level `docker-compose.yml` on the `ztp_default` network. Database migrations run automatically when the app starts.
 
 ```bash
 npm run db:up      # start all services and wait until they're ready
@@ -53,6 +55,7 @@ npm run db:down    # stop them (data stays in the ztp_pgdata volume)
 ```bash
 npm run start:dev                     # dev mode with watch
 npm run build && npm run start:prod   # production build
+npm run notifications:seed            # with the app running: sample notifications to watch the metrics change
 ```
 
 ## 4. Run in containers

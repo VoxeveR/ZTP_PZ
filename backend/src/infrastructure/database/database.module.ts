@@ -6,6 +6,7 @@ import { ExtendProducts1790000001000 } from './migrations/1790000001000-extend-p
 import { CreateProductHistory1790000002000 } from './migrations/1790000002000-create-product-history';
 import { CreateNotifications1790000003000 } from './migrations/1790000003000-create-notifications';
 import { IndexReadyNotifications1790000004000 } from './migrations/1790000004000-index-ready-notifications';
+import { AddNotificationIdempotencyKey1790000005000 } from './migrations/1790000005000-add-notification-idempotency-key';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { IndexReadyNotifications1790000004000 } from './migrations/1790000004000
           CreateProductHistory1790000002000,
           CreateNotifications1790000003000,
           IndexReadyNotifications1790000004000,
+          AddNotificationIdempotencyKey1790000005000,
         ],
         migrationsRun: true,
         retryAttempts: 3,

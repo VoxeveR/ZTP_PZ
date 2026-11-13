@@ -8,7 +8,8 @@ import { BodyValidationPipe } from './infrastructure/http/body-validation.pipe';
 export async function createApplication() {
   const app = await NestFactory.create(AppModule, { return503OnClosing: true });
   app.enableShutdownHooks([ShutdownSignal.SIGINT, ShutdownSignal.SIGTERM]);
-  app.setGlobalPrefix('api/v1');
+  // /metrics stays at the root, where Prometheus scrapes by default.
+  app.setGlobalPrefix('api/v1', { exclude: ['metrics'] });
   app.useGlobalPipes(new BodyValidationPipe());
   app.enableCors({
     origin: app.get(ConfigService).getOrThrow<string>('CORS_ORIGIN'),
