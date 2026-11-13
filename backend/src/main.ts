@@ -16,9 +16,6 @@ async function bootstrap(): Promise<void> {
 }
 
 void bootstrap().catch((error: unknown) => {
-  logger.error(
-    'Application startup failed',
-    error instanceof Error ? error.stack ?? error.message : String(error),
-  );
+  logger.error('Application startup failed', error instanceof Error ? (error.stack ?? error.message) : String(error));
   process.exitCode = 1;
 });

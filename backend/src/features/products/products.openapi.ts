@@ -28,7 +28,9 @@ function ApiProductWrite(type: typeof ProductWriteDto | typeof ProductPatchDto =
     ApiBody({ type }),
     ApiBadRequestResponse({ description: 'Invalid payload, ID, or missing category' }),
     ApiConflictResponse({ description: 'A product with this name already exists (case-insensitive)' }),
-    ApiUnprocessableEntityResponse({ description: 'Name, forbidden phrase, category price range, or quantity validation failed' }),
+    ApiUnprocessableEntityResponse({
+      description: 'Name, forbidden phrase, category price range, or quantity validation failed',
+    }),
   );
 }
 
@@ -55,7 +57,10 @@ export function ApiGetProduct() {
 
 export function ApiCreateProduct() {
   return applyDecorators(
-    ApiOperation({ summary: 'Create a product', description: 'All four fields are required. Price limits are inclusive and come from the category.' }),
+    ApiOperation({
+      summary: 'Create a product',
+      description: 'All four fields are required. Price limits are inclusive and come from the category.',
+    }),
     ApiProductWrite(),
     ApiCreatedResponse({ type: ProductResponseDto }),
   );
@@ -63,7 +68,10 @@ export function ApiCreateProduct() {
 
 export function ApiReplaceProduct() {
   return applyDecorators(
-    ApiOperation({ summary: 'Replace all editable product fields', description: 'PUT requires name, price, quantity, and categoryId; the product ID remains unchanged.' }),
+    ApiOperation({
+      summary: 'Replace all editable product fields',
+      description: 'PUT requires name, price, quantity, and categoryId; the product ID remains unchanged.',
+    }),
     ApiProductId(),
     ApiProductWrite(),
     ApiOkResponse({ type: ProductResponseDto }),
@@ -83,11 +91,14 @@ export function ApiDeleteProduct() {
 
 export function ApiPatchProduct() {
   return applyDecorators(
-    ApiOperation({ summary: 'Update selected product fields', description: 'At least one field is required. Omitted fields are preserved; null is rejected. The resulting state is validated and recorded as UPDATE.' }),
+    ApiOperation({
+      summary: 'Update selected product fields',
+      description:
+        'At least one field is required. Omitted fields are preserved; null is rejected. The resulting state is validated and recorded as UPDATE.',
+    }),
     ApiProductId(),
     ApiProductWrite(ProductPatchDto),
     ApiOkResponse({ type: ProductResponseDto }),
     ApiNotFoundResponse({ description: 'Product does not exist' }),
   );
 }
-

@@ -18,7 +18,12 @@ To solve a whole lab, use the `/lab <N>` skill.
 - Test: `npm test` (builds first; tests import from `dist/`)
 - Single file: `npm run test:products` / `test:history` / `test:lifecycle`
 - Container tests: `npm run test:docker` (needs `db:up`)
-- Always run `npm run typecheck` after changes
+- Always run `npm run typecheck` and `npm run lint` after changes (`npm run lint:fix` fixes formatting)
+
+## Hooks
+- Git pre-commit (husky, `.husky/pre-commit`): `npm run lint` in `backend/`. Root `npm install` sets it up.
+- Claude PreToolUse (`.claude/hooks/test-before-push.mjs`): before a `git push` to `main`/`master`, runs lint,
+  typecheck and tests in `backend/` and blocks the push if any fail. Keep the DB up (`npm run db:up`) before pushing.
 
 ## Backend architecture: vertical slicing
 - Each feature lives in `backend/src/features/<feature>/` and owns its full slice: controller, service, repository,

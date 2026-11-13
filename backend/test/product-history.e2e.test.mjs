@@ -56,7 +56,11 @@ async function history(id) {
 
 test('POST, PUT, PATCH and DELETE persist complete before/after snapshots, including after deletion', async () => {
   const original = await create();
-  const replacedResponse = await write('PUT', `/${original.id}`, payload({ price: 25.25, quantity: 8, categoryId: books.id }));
+  const replacedResponse = await write(
+    'PUT',
+    `/${original.id}`,
+    payload({ price: 25.25, quantity: 8, categoryId: books.id }),
+  );
   assert.equal(replacedResponse.status, 200);
   const replaced = await replacedResponse.json();
   const patchedResponse = await write('PATCH', `/${original.id}`, { quantity: 0 });
@@ -67,24 +71,34 @@ test('POST, PUT, PATCH and DELETE persist complete before/after snapshots, inclu
   assert.equal((await fetch(`${url}/${original.id}`)).status, 404);
 
   const entries = await history(original.id);
-  assert.deepEqual(entries.map((entry) => entry.action), ['DELETE', 'UPDATE', 'REPLACE', 'CREATE']);
-  assert.deepEqual(entries.map((entry) => [entry.previousState, entry.currentState]), [
-    [patched, {}], [replaced, patched], [original, replaced], [{}, original],
-  ]);
+  assert.deepEqual(
+    entries.map((entry) => entry.action),
+    ['DELETE', 'UPDATE', 'REPLACE', 'CREATE'],
+  );
+  assert.deepEqual(
+    entries.map((entry) => [entry.previousState, entry.currentState]),
+    [
+      [patched, {}],
+      [replaced, patched],
+      [original, replaced],
+      [{}, original],
+    ],
+  );
   for (const entry of entries) {
     assert.equal(entry.productId, original.id);
     assert.ok(Number.isInteger(entry.id));
     assert.ok(!Number.isNaN(Date.parse(entry.changedAt)));
   }
-  const [{ count }] = await app.get(DataSource).query(
-    'SELECT count(*)::int AS count FROM product_history WHERE product_id = $1', [original.id],
-  );
+  const [{ count }] = await app
+    .get(DataSource)
+    .query('SELECT count(*)::int AS count FROM product_history WHERE product_id = $1', [original.id]);
   assert.equal(count, 4);
 });
 
 test('a validation error in POST leaves both products and history unchanged', async () => {
   const database = app.get(DataSource);
-  const counts = () => database.query(`
+  const counts = () =>
+    database.query(`
     SELECT (SELECT count(*) FROM products) AS products,
            (SELECT count(*) FROM product_history) AS history
   `);
@@ -145,7 +159,10 @@ test('concurrent PATCH requests form a continuous chain of committed snapshots',
     await response.json();
   }
   const entries = (await history(original.id)).reverse();
-  assert.deepEqual(entries.map((entry) => entry.action), ['CREATE', 'UPDATE', 'UPDATE']);
+  assert.deepEqual(
+    entries.map((entry) => entry.action),
+    ['CREATE', 'UPDATE', 'UPDATE'],
+  );
   assert.deepEqual(entries[1].previousState, entries[0].currentState);
   assert.deepEqual(entries[2].previousState, entries[1].currentState);
   assert.deepEqual(await (await fetch(`${url}/${original.id}`)).json(), entries[2].currentState);
@@ -168,7 +185,9 @@ test('failure to save history rolls back POST, PUT, PATCH and DELETE', async () 
   }
   assert.deepEqual(await (await fetch(`${url}/${original.id}`)).json(), original);
   assert.deepEqual(await history(original.id), previousHistory);
-  const [{ count }] = await database.query('SELECT count(*)::int AS count FROM products WHERE name = $1', [attemptedCreate.name]);
+  const [{ count }] = await database.query('SELECT count(*)::int AS count FROM products WHERE name = $1', [
+    attemptedCreate.name,
+  ]);
   assert.equal(count, 0);
 });
 

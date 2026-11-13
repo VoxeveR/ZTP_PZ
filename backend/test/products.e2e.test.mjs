@@ -85,7 +85,12 @@ test('Swagger documents all CRUD endpoints and the decimal price contract', asyn
   assert.ok(document.paths['/api/v1/products/{id}'].put.responses['409']);
   assert.ok(document.paths['/api/v1/products/{id}'].put.responses['422']);
   assert.ok(document.paths['/api/v1/products/{id}'].delete.responses['204']);
-  assert.deepEqual(document.components.schemas.ProductWriteDto.required.toSorted(), ['categoryId', 'name', 'price', 'quantity']);
+  assert.deepEqual(document.components.schemas.ProductWriteDto.required.toSorted(), [
+    'categoryId',
+    'name',
+    'price',
+    'quantity',
+  ]);
   assert.equal(document.components.schemas.ProductResponseDto.properties.price.type, 'string');
 });
 
@@ -169,9 +174,9 @@ test('product names are unique regardless of letter case, including concurrent P
   ]);
   assert.deepEqual(responses.map((response) => response.status).sort(), [201, 409]);
   for (const response of responses) await response.text();
-  const [{ count }] = await app.get(DataSource).query(
-    'SELECT count(*)::int AS count FROM products WHERE lower(name) = lower($1)', [payload.name],
-  );
+  const [{ count }] = await app
+    .get(DataSource)
+    .query('SELECT count(*)::int AS count FROM products WHERE lower(name) = lower($1)', [payload.name]);
   assert.equal(count, 1);
 });
 
@@ -289,7 +294,9 @@ test('all write routes reject malformed IDs and invalid JSON is rejected', async
     assert.equal((await send(method, '/abc', method === 'PUT' ? validPayload() : undefined)).status, 400);
   }
   const response = await fetch(`${baseUrl}/api/v1/products`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{bad json',
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: '{bad json',
   });
   assert.equal(response.status, 400);
 });
@@ -300,7 +307,11 @@ test('the database also enforces stock, name format, and case-insensitive unique
   for (const [sql, values, code] of [
     ['UPDATE products SET quantity = -1 WHERE id = $1', [product.id], '23514'],
     ["UPDATE products SET name = 'Bad Name' WHERE id = $1", [product.id], '23514'],
-    ['INSERT INTO products(name, price, category_id) VALUES ($1, 20, $2)', [product.name.toUpperCase(), product.category.id], '23505'],
+    [
+      'INSERT INTO products(name, price, category_id) VALUES ($1, 20, $2)',
+      [product.name.toUpperCase(), product.category.id],
+      '23505',
+    ],
   ]) {
     await assert.rejects(database.query(sql, values), (error) => error.driverError.code === code);
   }

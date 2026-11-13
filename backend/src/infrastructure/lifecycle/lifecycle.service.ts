@@ -10,12 +10,7 @@ import {
 
 @Injectable()
 export class LifecycleService
-  implements
-    OnModuleInit,
-    OnApplicationBootstrap,
-    OnModuleDestroy,
-    BeforeApplicationShutdown,
-    OnApplicationShutdown
+  implements OnModuleInit, OnApplicationBootstrap, OnModuleDestroy, BeforeApplicationShutdown, OnApplicationShutdown
 {
   private readonly logger = new Logger(LifecycleService.name);
 
@@ -38,8 +33,6 @@ export class LifecycleService
   }
 
   onApplicationShutdown(signal?: string): void {
-    this.logger.log(
-      `HTTP server closed (${signal ?? 'app.close()'}); running resource shutdown hooks`,
-    );
+    this.logger.log(`HTTP server closed (${signal ?? 'app.close()'}); running resource shutdown hooks`);
   }
 }

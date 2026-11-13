@@ -16,7 +16,7 @@ export class ProductHistoryService {
 
   async findByProductId(id: number): Promise<ProductHistoryResponseDto[]> {
     const entries = await this.history.findByProductId(id);
-    if (entries.length === 0 && !await this.products.findById(id)) {
+    if (entries.length === 0 && !(await this.products.findById(id))) {
       throw new ProductNotFoundError(`Product with ID ${id} was not found`);
     }
     return entries.map((entry) => ({

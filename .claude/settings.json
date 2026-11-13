@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/test-before-push.mjs\"",
+            "timeout": 600,
+            "statusMessage": "Running lint, typecheck and tests before pushing to main..."
+          }
+        ]
+      }
+    ]
+  }
+}

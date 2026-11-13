@@ -30,7 +30,8 @@ export class ProductsRepository {
   findById(id: number, manager?: EntityManager, lock = false): Promise<Product | null> {
     const products = manager?.getRepository(Product) ?? this.products;
     if (lock) {
-      return products.createQueryBuilder('product')
+      return products
+        .createQueryBuilder('product')
         .innerJoinAndSelect('product.category', 'category')
         .where('product.id = :id', { id })
         .setLock('pessimistic_write', undefined, ['product'])
@@ -44,7 +45,8 @@ export class ProductsRepository {
   }
 
   async nameExists(name: string, excludeId?: number, manager?: EntityManager): Promise<boolean> {
-    const query = (manager?.getRepository(Product) ?? this.products).createQueryBuilder('product')
+    const query = (manager?.getRepository(Product) ?? this.products)
+      .createQueryBuilder('product')
       .where('lower(product.name) = lower(:name)', { name });
     if (excludeId !== undefined) query.andWhere('product.id != :excludeId', { excludeId });
     return query.getExists();

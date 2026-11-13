@@ -15,14 +15,27 @@ docs/                acceptance criteria and lab reports
 
 ---
 
-All commands below are run in `backend/`.
+All commands below are run in `backend/`, except the first `npm install`.
 
 ## 1. Setup
 
 ```bash
+npm install              # in the repo root: installs the husky git hooks
 cd backend
 npm install
 cp .env.example .env
+```
+
+The pre-commit hook runs `npm run lint` in `backend/` and blocks the commit if it fails.
+
+## Lint and format
+
+ESLint (typescript-eslint, NestJS defaults) with Prettier.
+
+```bash
+npm run lint             # check
+npm run lint:fix         # fix what can be fixed automatically
+npm run format           # Prettier only
 ```
 
 ## 2. Database (PostgreSQL)

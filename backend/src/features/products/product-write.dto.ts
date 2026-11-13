@@ -3,8 +3,12 @@ import { IsInt, IsNumber, IsString, Max, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProductWriteDto {
-  @ApiProperty({ example: 'Keyboard1', minLength: 3, maxLength: 20,
-    description: 'Unique name, letters and digits only. Forbidden phrases are rejected.' })
+  @ApiProperty({
+    example: 'Keyboard1',
+    minLength: 3,
+    maxLength: 20,
+    description: 'Unique name, letters and digits only. Forbidden phrases are rejected.',
+  })
   @IsString()
   name!: string;
 

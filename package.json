@@ -1,0 +1,11 @@
+{
+  "name": "ztp",
+  "private": true,
+  "description": "Repo-level tooling (git hooks). App code lives in backend/.",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

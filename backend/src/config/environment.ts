@@ -23,6 +23,9 @@ function readPort(value: unknown, fallback: number, key: string): number {
 }
 
 function readText(value: unknown, fallback: string, key: string): string {
+  if (value !== undefined && typeof value !== 'string' && typeof value !== 'number') {
+    throw new Error(`${key} must be a string`);
+  }
   const text = value === undefined ? fallback : String(value);
   if (!text.trim()) throw new Error(`${key} must not be empty`);
   return text;

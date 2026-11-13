@@ -43,13 +43,15 @@ export class ProductsService {
   }
 
   async create(payload: ProductWriteDto): Promise<ProductResponseDto> {
-    const product = await this.persist(() => this.products.transaction(async (manager) => {
-      const values = await this.validate(payload, undefined, manager);
-      const created = await this.products.create(values, manager);
-      const currentState = this.toResponse(created);
-      await this.history.append(manager, created.id, ProductHistoryAction.CREATE, {}, currentState);
-      return currentState;
-    }));
+    const product = await this.persist(() =>
+      this.products.transaction(async (manager) => {
+        const values = await this.validate(payload, undefined, manager);
+        const created = await this.products.create(values, manager);
+        const currentState = this.toResponse(created);
+        await this.history.append(manager, created.id, ProductHistoryAction.CREATE, {}, currentState);
+        return currentState;
+      }),
+    );
     this.logger.log(`Created product with ID ${product.id}`);
     return product;
   }
@@ -78,15 +80,17 @@ export class ProductsService {
   }
 
   async delete(id: number): Promise<void> {
-    await this.persist(() => this.products.transaction(async (manager) => {
-      const product = await this.products.findById(id, manager, true);
-      if (!product) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
-      const previousState = this.toResponse(product);
-      if (!await this.products.delete(id, manager)) {
-        throw new ProductNotFoundError(`Product with ID ${id} was not found`);
-      }
-      await this.history.append(manager, id, ProductHistoryAction.DELETE, previousState, {});
-    }));
+    await this.persist(() =>
+      this.products.transaction(async (manager) => {
+        const product = await this.products.findById(id, manager, true);
+        if (!product) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
+        const previousState = this.toResponse(product);
+        if (!(await this.products.delete(id, manager))) {
+          throw new ProductNotFoundError(`Product with ID ${id} was not found`);
+        }
+        await this.history.append(manager, id, ProductHistoryAction.DELETE, previousState, {});
+      }),
+    );
     this.logger.log(`Deleted product with ID ${id}`);
   }
 
@@ -95,21 +99,27 @@ export class ProductsService {
     action: ProductHistoryAction.REPLACE | ProductHistoryAction.UPDATE,
     payload: (current: Product) => ProductWriteDto,
   ): Promise<ProductResponseDto> {
-    return this.persist(() => this.products.transaction(async (manager) => {
-      // Serialize concurrent changes to keep each previous state equal to the preceding committed state.
-      const current = await this.products.findById(id, manager, true);
-      if (!current) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
-      const previousState = this.toResponse(current);
-      const values = await this.validate(payload(current), id, manager);
-      const updated = await this.products.replace(id, values, manager);
-      if (!updated) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
-      const currentState = this.toResponse(updated);
-      await this.history.append(manager, id, action, previousState, currentState);
-      return currentState;
-    }));
+    return this.persist(() =>
+      this.products.transaction(async (manager) => {
+        // Serialize concurrent changes to keep each previous state equal to the preceding committed state.
+        const current = await this.products.findById(id, manager, true);
+        if (!current) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
+        const previousState = this.toResponse(current);
+        const values = await this.validate(payload(current), id, manager);
+        const updated = await this.products.replace(id, values, manager);
+        if (!updated) throw new ProductNotFoundError(`Product with ID ${id} was not found`);
+        const currentState = this.toResponse(updated);
+        await this.history.append(manager, id, action, previousState, currentState);
+        return currentState;
+      }),
+    );
   }
 
-  private async validate(payload: ProductWriteDto, excludeId?: number, manager?: EntityManager): Promise<ProductValues> {
+  private async validate(
+    payload: ProductWriteDto,
+    excludeId?: number,
+    manager?: EntityManager,
+  ): Promise<ProductValues> {
     const name = payload.name.normalize('NFC');
     if (!/^[\p{L}\p{Nd}]{3,20}$/u.test(name)) {
       throw new ProductValidationError('Product name must contain 3–20 letters or digits');
@@ -121,10 +131,15 @@ export class ProductsService {
     if (!category) throw new ProductRelationNotFoundError('Category does not exist');
 
     const cents = Math.round(payload.price * 100);
-    if (cents < 0 || cents > 9999999999 ||
-        cents < Math.round(Number(category.minPrice) * 100) ||
-        cents > Math.round(Number(category.maxPrice) * 100)) {
-      throw new ProductValidationError(`Price must be between ${category.minPrice} and ${category.maxPrice} for this category`);
+    if (
+      cents < 0 ||
+      cents > 9999999999 ||
+      cents < Math.round(Number(category.minPrice) * 100) ||
+      cents > Math.round(Number(category.maxPrice) * 100)
+    ) {
+      throw new ProductValidationError(
+        `Price must be between ${category.minPrice} and ${category.maxPrice} for this category`,
+      );
     }
     if (payload.quantity < 0 || payload.quantity > 2147483647) {
       throw new ProductValidationError('Quantity must be between 0 and 2147483647');
