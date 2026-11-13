@@ -25,3 +25,6 @@ Thumbs.db
 
 # Lab materials from the teacher (local only)
 /LABS/
+
+# Local presentation workspace (pptx skill)
+/presentation/
