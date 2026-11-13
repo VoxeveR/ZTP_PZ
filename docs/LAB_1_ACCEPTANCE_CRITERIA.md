@@ -7,7 +7,7 @@ Dokument do prezentacji etapów 1.1–1.3 prowadzącej. Projekt używa NestJS/Ty
 | Wymaganie | Gdzie pokazać | Konkretna funkcja / element |
 | --- | --- | --- |
 | Własny projekt w VS Code | [package.json](../package.json), [main.ts](../src/main.ts), [launch.json](../../.vscode/launch.json) | Zależności NestJS, skrypty npm, `bootstrap()`, konfiguracja debugowania. |
-| PostgreSQL w kontenerze Dockera | [docker-compose.yml](../../docker-compose.yml) | Usługa `postgres`: obraz PostgreSQL 16, port 5432, dane dostępowe, wolumen `pgdata`, healthcheck. |
+| PostgreSQL w kontenerze Dockera | [docker-compose.yml](../docker-compose.yml) | Usługa `postgres`: obraz PostgreSQL 16, port 5432, dane dostępowe, wolumen `pgdata`, healthcheck. |
 | Połączenie aplikacji z PostgreSQL | [database.module.ts](../src/infrastructure/database/database.module.ts), [environment.ts](../src/config/environment.ts) | `TypeOrmModule.forRootAsync()` i jego `useFactory`; `validateEnvironment()` dostarcza parametry `DB_*`. |
 | Baza z produktami, kategoriami i cenami | [1790000000000-create-products.ts](../src/infrastructure/database/migrations/1790000000000-create-products.ts) | `CreateProducts1790000000000.up()` tworzy `products`, `categories`, relację i przykładowe dane. `Product` i `Category` w plikach encji mapują tabele na klasy TypeORM. |
 | `GET /api/v1/products` | [products.controller.ts](../src/features/products/products.controller.ts), [products.service.ts](../src/features/products/products.service.ts), [products.repository.ts](../src/features/products/products.repository.ts) | Kolejno `ProductsController.findAll()` → `ProductsService.findAll()` → `ProductsRepository.findAll()`. |
@@ -66,7 +66,7 @@ npm run start:dev
 
 Swagger: http://127.0.0.1:8000/docs. Do testów automatycznych serwer `start:dev` nie musi być uruchomiony: testy tworzą własne aplikacje na wolnych portach. Baza PostgreSQL musi działać.
 
-Podgląd bazy, z katalogu głównego `ZTP`:
+Podgląd bazy, z katalogu `backend`:
 
 ```powershell
 docker compose exec postgres psql -U appuser -d appdb -c "SELECT p.id, p.name, p.price, p.quantity, c.name AS category, c.min_price, c.max_price FROM products p JOIN categories c ON c.id = p.category_id ORDER BY p.id;"
