@@ -56,11 +56,11 @@ has a frontend, run the same cases through the frontend instead.
      IDs are `TC-<N>.<k>-<nn>`. Steps name the Swagger page and endpoint and give the exact request body.
      The expected result gives the status code and the key response fields. Leave `Wynik` empty for now.
 2. **Ask the user to accept the test cases.** Adjust and ask again until they accept. Don't run anything before.
-3. **Run them with Playwright** (the Playwright MCP tools). Start the DB (`npm run db:up`) and the API on a
+3. **Run them in a browser**: the Playwright MCP tools, or the built-in browser pane. Start the DB (`npm run db:up`) and the API on a
    throwaway database (as `capture-evidence.cjs` in the lab 1 report folder does), never on `appdb`. For each case,
    open the Swagger page, expand the endpoint, click "Try it out", fill in the parameters and body, click
    "Execute", and read the response code and body from the page. Prepare the preconditions through Swagger too.
-   If Playwright tools are not available, stop and tell the user instead of falling back to curl.
+   If neither browser is available, stop and tell the user instead of falling back to curl.
 4. **Write the results into the same file**: fill `Wynik` with ✅ or ❌ and put the actual status and the
    relevant part of the body in `Uwagi`. Add a `## Podsumowanie` section at the end: date, number of passed and
    failed cases, and a list of fixes made.
