@@ -1,7 +1,8 @@
 ---
 name: lab
-description: Solve a ZTP laboratory (e.g. "solve lab 2", "/lab 2"). Splits the lab into its stages (2.1, 2.2, 2.3), implements each in NestJS with its own commit and acceptance criteria, asks for approval, then builds the lab report (.docx).
+description: Solve a ZTP laboratory (e.g. "solve lab 2", "/lab 2"). Splits the lab into its stages (2.1, 2.2, 2.3), implements each in NestJS with its own commit and acceptance criteria, asks for approval, verifies the whole lab with manual test cases run in Swagger UI via Playwright, then builds the lab report (.docx).
 argument-hint: <lab number>
+allowed-tools: mcp__playwright, mcp__plugin_playwright_playwright
 ---
 
 # Solving lab $ARGUMENTS
@@ -43,7 +44,34 @@ Use `docs/LAB_1_ACCEPTANCE_CRITERIA.md` as the template. Copy its structure and 
 - After the last stage: `## Uruchomienie aplikacji do prezentacji`, `## Testy naszej aplikacji — skrypty package.json`
   (table of commands → scope) and, if the teacher supplied tests, `## Oryginalne testy Python od prowadzącej`.
 
-## Phase 2: report (only after all stages are accepted)
+## Phase 2: manual verification (after all stages are accepted)
+Verify the whole lab end to end, the way the teacher will see it. For now through Swagger UI; once the project
+has a frontend, run the same cases through the frontend instead.
+1. **Write the test cases** in `docs/LAB_<N>_MANUAL_TESTS.md`, next to the acceptance criteria, in Polish.
+   Derive them from `docs/LAB_<N>_ACCEPTANCE_CRITERIA.md`: every criteria row is covered by at least one case,
+   including error paths (400/404/409/422). Format:
+   - `# Laboratorium <N>: manualne scenariusze testowe` + one line on how to run (Swagger URL, DB used).
+   - Per stage, `## Etap <N>.<k>` with a table
+     `| ID | Wymaganie | Warunki wstępne | Kroki | Oczekiwany wynik | Wynik | Uwagi |`.
+     IDs are `TC-<N>.<k>-<nn>`. Steps name the Swagger page and endpoint and give the exact request body.
+     The expected result gives the status code and the key response fields. Leave `Wynik` empty for now.
+2. **Ask the user to accept the test cases.** Adjust and ask again until they accept. Don't run anything before.
+3. **Run them with Playwright** (the Playwright MCP tools). Start the DB (`npm run db:up`) and the API on a
+   throwaway database (as `capture-evidence.cjs` in the lab 1 report folder does), never on `appdb`. For each case,
+   open the Swagger page, expand the endpoint, click "Try it out", fill in the parameters and body, click
+   "Execute", and read the response code and body from the page. Prepare the preconditions through Swagger too.
+   If Playwright tools are not available, stop and tell the user instead of falling back to curl.
+4. **Write the results into the same file**: fill `Wynik` with ✅ or ❌ and put the actual status and the
+   relevant part of the body in `Uwagi`. Add a `## Podsumowanie` section at the end: date, number of passed and
+   failed cases, and a list of fixes made.
+5. **Fix failing cases.** For each ❌, decide whether the code or the case is wrong. Fix the code following
+   `CLAUDE.md` and rerun `npm run lint`, `npm run typecheck` and `npm test`. A wrong case is changed only with the
+   user's OK. Then rerun all cases, not only the failed ones, and update the results. Repeat until all pass.
+   Record each fix in `Podsumowanie` (case ID, cause, changed files).
+6. Show the user the summary and ask for acceptance. Commit code fixes as `<N>-fix: <summary>`, then the test file
+   as `<N>: manual tests`. Don't push unless asked.
+
+## Phase 3: report (only after the manual tests are accepted)
 - Output: `docs/reports/sprawozdanie_projekt_<N>/Piotr_Zietek_SiRR_nst_sprawozdanie_projekt_<N>.docx`,
   with `assets/` and generator scripts in the same folder (mirror `docs/reports/sprawozdanie_projekt_1/`).
 - Content: follow the table of contents from the lab's `imie_nazwisko_grupa_sprawozdanie_projekt_<N>.docx` exactly.
