@@ -57,8 +57,10 @@ export function ApiCreateNotification() {
     ApiHeader({
       name: 'Idempotency-Key',
       required: false,
-      description: 'Client operation ID, 1–255 visible ASCII characters. Stored as the idempotencyKey.',
-      example: 'order-1024-restock',
+      // No `example`: Swagger UI would pre-fill it in "Try it out", so every POST would reuse the same key.
+      description:
+        'Client operation ID, 1–255 visible ASCII characters (e.g. order-1024-restock). Stored as the idempotencyKey. ' +
+        'Leave empty to let the server generate a key.',
     }),
     ApiBody({ type: NotificationCreateDto }),
     ApiCreatedResponse({ type: NotificationResponseDto, description: 'Notification created' }),
