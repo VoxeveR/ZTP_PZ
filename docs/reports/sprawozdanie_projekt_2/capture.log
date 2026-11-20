@@ -1,0 +1,39 @@
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [NestFactory] Starting Nest application...
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] AppModule dependencies initialized +40ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] DatabaseModule dependencies initialized +1ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] LifecycleModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] OpenApiModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] ConfigModule dependencies initialized +3ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +391ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmModule dependencies initialized +1ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] ProductsPersistenceModule dependencies initialized +0ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] CategoriesModule dependencies initialized +4ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] ProductHistoryModule dependencies initialized +1ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] NotificationsModule dependencies initialized +1ms
+[Nest] 32476  - 15.11.2026, 23:35:59     LOG [InstanceLoader] ProductsModule dependencies initialized +0ms
+docs-notifications: http://127.0.0.1:8000/notifications-docs
+docs-products: http://127.0.0.1:8000/products-docs
+01-post-push-scheduled: HTTP 201
+02-post-email-scheduled: HTTP 201
+03-get-push-sent: HTTP 200
+04-get-email-sent: HTTP 200
+ntfy-topic: http://localhost:8088/ztp-sprawozdanie-mwieybir
+mailhog-message: http://localhost:8025
+05-patch-cancelled: HTTP 200
+06-patch-final-422: HTTP 422
+07-send-now-not-pending-422: HTTP 422
+08-post-utc-offset: HTTP 201
+09-post-past-422: HTTP 422
+10-post-key-201: HTTP 201
+11-post-key-replay-200: HTTP 200
+12-post-key-conflict-409: HTTP 409
+13-get-metrics: HTTP 200
+prom-targets: http://localhost:9090/targets
+prom-table-by-channel: http://localhost:9090/query?g0.expr=notifications_by_channel&g0.tab=table&g0.range_input=149s
+prom-graph-by-channel: http://localhost:9090/query?g0.expr=notifications_by_channel&g0.tab=graph&g0.range_input=149s
+prom-graph-totals: http://localhost:9090/query?g0.expr=%7B__name__%3D~%22notifications_(sent%7Cpending%7Cfailed%7Ccancelled)_total%22%7D&g0.tab=graph&g0.range_input=149s

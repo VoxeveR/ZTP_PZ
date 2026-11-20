@@ -1,0 +1,740 @@
+{
+  "base": "http://127.0.0.1:8000",
+  "database": "ztp_test_691a9893f47d4b0aaefede576a503d38",
+  "topic": "ztp-sprawozdanie-mwieybir",
+  "capturedAt": "2026-11-15T22:36:00.813Z",
+  "cases": [
+    {
+      "key": "01-post-push-scheduled",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Produkt Keyboard1 znów dostępny w magazynie",
+        "channel": "PUSH",
+        "recipient": "ztp-sprawozdanie-mwieybir",
+        "scheduledAt": "2026-11-15T23:36:30",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {},
+      "status": 201,
+      "responseHeaders": {
+        "etag": "W/\"133-jKgXfZbCHlvfeZCnOsa7rlo1C5A\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "307",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:07 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 1,
+        "content": "Produkt Keyboard1 znów dostępny w magazynie",
+        "channel": "PUSH",
+        "recipient": "ztp-sprawozdanie-mwieybir",
+        "scheduledAt": "2026-11-15T22:36:30.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "PENDING",
+        "createdAt": "2026-11-15T22:36:07.340Z",
+        "idempotencyKey": "notif_0gxqIcHMCgNofQTXQKxvfBBv4wFuLe5g"
+      },
+      "image": "assets/01-post-push-scheduled.png"
+    },
+    {
+      "key": "02-post-email-scheduled",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Twoje zamówienie produktu Laptop zostało wysłane.",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2026-11-15T23:36:30",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {},
+      "status": 201,
+      "responseHeaders": {
+        "etag": "W/\"134-dx0BMBswzKfAg4/JEGUc1zhi+dw\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "308",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:09 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 2,
+        "content": "Twoje zamówienie produktu Laptop zostało wysłane.",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2026-11-15T22:36:30.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "PENDING",
+        "createdAt": "2026-11-15T22:36:09.326Z",
+        "idempotencyKey": "notif_Bwbn4PuuNQNXCPZa-SfnVWgLNoX-kedH"
+      },
+      "image": "assets/02-post-email-scheduled.png"
+    },
+    {
+      "key": "03-get-push-sent",
+      "method": "GET",
+      "route": "/api/v1/notifications/{id}",
+      "id": 1,
+      "headers": {},
+      "status": 200,
+      "responseHeaders": {
+        "etag": "W/\"130-pbMioMBnSYPZa68ftLBWu9Pq6Sc\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "304",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:36 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 1,
+        "content": "Produkt Keyboard1 znów dostępny w magazynie",
+        "channel": "PUSH",
+        "recipient": "ztp-sprawozdanie-mwieybir",
+        "scheduledAt": "2026-11-15T22:36:30.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "SENT",
+        "createdAt": "2026-11-15T22:36:07.340Z",
+        "idempotencyKey": "notif_0gxqIcHMCgNofQTXQKxvfBBv4wFuLe5g"
+      },
+      "image": "assets/03-get-push-sent.png"
+    },
+    {
+      "key": "04-get-email-sent",
+      "method": "GET",
+      "route": "/api/v1/notifications/{id}",
+      "id": 2,
+      "headers": {},
+      "status": 200,
+      "responseHeaders": {
+        "etag": "W/\"131-iRKVtBGudcY+GAU6R8eOKf1NvXk\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "305",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:38 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 2,
+        "content": "Twoje zamówienie produktu Laptop zostało wysłane.",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2026-11-15T22:36:30.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "SENT",
+        "createdAt": "2026-11-15T22:36:09.326Z",
+        "idempotencyKey": "notif_Bwbn4PuuNQNXCPZa-SfnVWgLNoX-kedH"
+      },
+      "image": "assets/04-get-email-sent.png"
+    },
+    {
+      "key": "05-patch-cancelled",
+      "method": "PATCH",
+      "route": "/api/v1/notifications/{id}/status",
+      "requestBody": {
+        "status": "CANCELLED"
+      },
+      "id": 3,
+      "headers": {},
+      "status": 200,
+      "responseHeaders": {
+        "etag": "W/\"11e-8B75SHFAOtCRTUV8BTQ9Qavxu08\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "286",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:50 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 3,
+        "content": "Promocja na kategorię Books",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-06-01T08:00:00.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "CANCELLED",
+        "createdAt": "2026-11-15T22:36:48.815Z",
+        "idempotencyKey": "notif_X3BY3nNKtunkw3eCigIZkajGNMxPeZ9e"
+      },
+      "image": "assets/05-patch-cancelled.png"
+    },
+    {
+      "key": "06-patch-final-422",
+      "method": "PATCH",
+      "route": "/api/v1/notifications/{id}/status",
+      "requestBody": {
+        "status": "SENT"
+      },
+      "id": 3,
+      "headers": {},
+      "status": 422,
+      "responseHeaders": {
+        "etag": "W/\"6e-5NUioGRlp6YuPTI5C1UsFmmgxkk\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "110",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:52 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Transition from CANCELLED to SENT is not allowed",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/06-patch-final-422.png"
+    },
+    {
+      "key": "07-send-now-not-pending-422",
+      "method": "POST",
+      "route": "/api/v1/notifications/{id}/send-now",
+      "id": 1,
+      "headers": {},
+      "status": 422,
+      "responseHeaders": {
+        "etag": "W/\"7c-+PNz8TrF5QqimlB89BmYj5qEG70\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "124",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:54 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "statusCode": 422,
+        "message": "Only PENDING notifications can be sent; notification 1 is SENT",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/07-send-now-not-pending-422.png"
+    },
+    {
+      "key": "08-post-utc-offset",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Czas z oznaczeniem Z",
+        "channel": "PUSH",
+        "recipient": "ztp-sprawozdanie-mwieybir",
+        "scheduledAt": "2027-07-15T09:00:00Z",
+        "timezone": "Asia/Tokyo"
+      },
+      "headers": {},
+      "status": 201,
+      "responseHeaders": {
+        "etag": "W/\"117-QeSP1vhJIBJF08BiVBta99tivI0\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "279",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:56 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 4,
+        "content": "Czas z oznaczeniem Z",
+        "channel": "PUSH",
+        "recipient": "ztp-sprawozdanie-mwieybir",
+        "scheduledAt": "2027-07-15T09:00:00.000Z",
+        "timezone": "Asia/Tokyo",
+        "status": "PENDING",
+        "createdAt": "2026-11-15T22:36:56.631Z",
+        "idempotencyKey": "notif_Gcgb1-eyCUPz75Up4rnfIyBBa5mxbRGG"
+      },
+      "image": "assets/08-post-utc-offset.png"
+    },
+    {
+      "key": "09-post-past-422",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Termin w przeszłości",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2020-01-15T09:00:00",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {},
+      "status": 422,
+      "responseHeaders": {
+        "etag": "W/\"5f-7ppdfAek08+Ladzxnc829HEHmEA\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "95",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:36:58 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "statusCode": 422,
+        "message": "scheduledAt must be in the future",
+        "error": "UNPROCESSABLE_ENTITY"
+      },
+      "image": "assets/09-post-past-422.png"
+    },
+    {
+      "key": "10-post-key-201",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Potwierdzenie zamówienia 1024",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-05-01T10:00:00",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {
+        "Idempotency-Key": "zamowienie-1024"
+      },
+      "status": 201,
+      "responseHeaders": {
+        "etag": "W/\"107-EWx9Pbrn4AtFLd8Zcs6DALKnbRM\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "263",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:37:00 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 5,
+        "content": "Potwierdzenie zamówienia 1024",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-05-01T08:00:00.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "PENDING",
+        "createdAt": "2026-11-15T22:37:00.522Z",
+        "idempotencyKey": "zamowienie-1024"
+      },
+      "image": "assets/10-post-key-201.png"
+    },
+    {
+      "key": "11-post-key-replay-200",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Potwierdzenie zamówienia 1024",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-05-01T10:00:00",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {
+        "Idempotency-Key": "zamowienie-1024"
+      },
+      "status": 200,
+      "responseHeaders": {
+        "etag": "W/\"107-EWx9Pbrn4AtFLd8Zcs6DALKnbRM\"",
+        "connection": "keep-alive",
+        "idempotent-replayed": "true",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "263",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:37:02 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "id": 5,
+        "content": "Potwierdzenie zamówienia 1024",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-05-01T08:00:00.000Z",
+        "timezone": "Europe/Warsaw",
+        "status": "PENDING",
+        "createdAt": "2026-11-15T22:37:00.522Z",
+        "idempotencyKey": "zamowienie-1024"
+      },
+      "image": "assets/11-post-key-replay-200.png"
+    },
+    {
+      "key": "12-post-key-conflict-409",
+      "method": "POST",
+      "route": "/api/v1/notifications",
+      "requestBody": {
+        "content": "Inna treść",
+        "channel": "EMAIL",
+        "recipient": "klient@example.com",
+        "scheduledAt": "2027-05-01T10:00:00",
+        "timezone": "Europe/Warsaw"
+      },
+      "headers": {
+        "Idempotency-Key": "zamowienie-1024"
+      },
+      "status": 409,
+      "responseHeaders": {
+        "etag": "W/\"86-4hY8mVNDI4KkefAV4/8St3/WNWg\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "134",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:37:04 GMT",
+        "content-type": "application/json; charset=utf-8",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": {
+        "statusCode": 409,
+        "message": "Idempotency-Key zamowienie-1024 was already used for a different notification (ID 5)",
+        "error": "CONFLICT"
+      },
+      "image": "assets/12-post-key-conflict-409.png"
+    },
+    {
+      "key": "13-get-metrics",
+      "method": "GET",
+      "route": "/metrics",
+      "headers": {},
+      "status": 200,
+      "responseHeaders": {
+        "etag": "W/\"474-ZCOJVxoRefQAuX0HFrsaLGGhcik\"",
+        "connection": "keep-alive",
+        "access-control-allow-origin": "http://localhost:5173",
+        "content-length": "1140",
+        "keep-alive": "timeout=5",
+        "date": "Sun, 15 Nov 2026 22:38:01 GMT",
+        "content-type": "text/plain; charset=utf-8; version=0.0.4",
+        "x-powered-by": "Express",
+        "vary": "Origin"
+      },
+      "responseBody": "# HELP notifications_pending_total Number of pending notifications\n# TYPE notifications_pending_total gauge\nnotifications_pending_total 3\n# HELP notifications_sent_total Number of sent notifications\n# TYPE notifications_sent_total gauge\nnotifications_sent_total 7\n# HELP notifications_failed_total Number of failed notifications\n# TYPE notifications_failed_total gauge\nnotifications_failed_total 1\n# HELP notifications_cancelled_total Number of cancelled notifications\n# TYPE notifications_cancelled_total gauge\nnotifications_cancelled_total 2\n# HELP notifications_by_channel Number of notifications by status and channel\n# TYPE notifications_by_channel gauge\nnotifications_by_channel{status=\"PENDING\",channel=\"EMAIL\"} 2\nnotifications_by_channel{status=\"PENDING\",channel=\"PUSH\"} 1\nnotifications_by_channel{status=\"SENT\",channel=\"EMAIL\"} 4\nnotifications_by_channel{status=\"SENT\",channel=\"PUSH\"} 3\nnotifications_by_channel{status=\"FAILED\",channel=\"EMAIL\"} 0\nnotifications_by_channel{status=\"FAILED\",channel=\"PUSH\"} 1\nnotifications_by_channel{status=\"CANCELLED\",channel=\"EMAIL\"} 1\nnotifications_by_channel{status=\"CANCELLED\",channel=\"PUSH\"} 1\n",
+      "image": "assets/13-get-metrics.png"
+    }
+  ],
+  "screens": [
+    {
+      "key": "docs-notifications",
+      "url": "http://127.0.0.1:8000/notifications-docs",
+      "image": "assets/docs-notifications.png"
+    },
+    {
+      "key": "docs-products",
+      "url": "http://127.0.0.1:8000/products-docs",
+      "image": "assets/docs-products.png"
+    },
+    {
+      "key": "ntfy-topic",
+      "url": "http://localhost:8088/ztp-sprawozdanie-mwieybir",
+      "image": "assets/ntfy-topic.png"
+    },
+    {
+      "key": "mailhog-message",
+      "url": "http://localhost:8025",
+      "image": "assets/mailhog-message.png"
+    },
+    {
+      "key": "prom-targets",
+      "url": "http://localhost:9090/targets",
+      "image": "assets/prom-targets.png"
+    },
+    {
+      "key": "prom-table-by-channel",
+      "url": "http://localhost:9090/query?g0.expr=notifications_by_channel&g0.tab=table&g0.range_input=149s",
+      "image": "assets/prom-table-by-channel.png"
+    },
+    {
+      "key": "prom-graph-by-channel",
+      "url": "http://localhost:9090/query?g0.expr=notifications_by_channel&g0.tab=graph&g0.range_input=149s",
+      "image": "assets/prom-graph-by-channel.png"
+    },
+    {
+      "key": "prom-graph-totals",
+      "url": "http://localhost:9090/query?g0.expr=%7B__name__%3D~%22notifications_(sent%7Cpending%7Cfailed%7Ccancelled)_total%22%7D&g0.tab=graph&g0.range_input=149s",
+      "image": "assets/prom-graph-totals.png"
+    }
+  ],
+  "scheduled": {
+    "local": "2026-11-15T23:36:30",
+    "utc": "2026-11-15T22:36:30.000Z",
+    "pushId": 1,
+    "emailId": 2,
+    "sentObservedAt": "2026-11-15T22:36:35.447Z"
+  },
+  "seedOutput": "#6  EMAIL, due in 10 s\n#7  PUSH, due in 15 s\n#8  EMAIL, due in 20 s\n#9  PUSH, due in 25 s, invalid topic -> FAILED\n#10  PUSH, due in 30 s\n#11  EMAIL, due in 1 h (stays PENDING)\n#12  PUSH, due in 1 h, then CANCELLED\n#13  EMAIL, due in 35 s, Idempotency-Key seed-mwiezw2g: first 201, retry 200 -> #13\n\nWatch the metrics change: http://127.0.0.1:8000/metrics and http://localhost:9090 (e.g. notifications_by_channel)",
+  "prometheusRange": "149s",
+  "metrics": "# HELP notifications_pending_total Number of pending notifications\n# TYPE notifications_pending_total gauge\nnotifications_pending_total 3\n# HELP notifications_sent_total Number of sent notifications\n# TYPE notifications_sent_total gauge\nnotifications_sent_total 7\n# HELP notifications_failed_total Number of failed notifications\n# TYPE notifications_failed_total gauge\nnotifications_failed_total 1\n# HELP notifications_cancelled_total Number of cancelled notifications\n# TYPE notifications_cancelled_total gauge\nnotifications_cancelled_total 2\n# HELP notifications_by_channel Number of notifications by status and channel\n# TYPE notifications_by_channel gauge\nnotifications_by_channel{status=\"PENDING\",channel=\"EMAIL\"} 2\nnotifications_by_channel{status=\"PENDING\",channel=\"PUSH\"} 1\nnotifications_by_channel{status=\"SENT\",channel=\"EMAIL\"} 4\nnotifications_by_channel{status=\"SENT\",channel=\"PUSH\"} 3\nnotifications_by_channel{status=\"FAILED\",channel=\"EMAIL\"} 0\nnotifications_by_channel{status=\"FAILED\",channel=\"PUSH\"} 1\nnotifications_by_channel{status=\"CANCELLED\",channel=\"EMAIL\"} 1\nnotifications_by_channel{status=\"CANCELLED\",channel=\"PUSH\"} 1\n",
+  "prometheus": {
+    "status": "success",
+    "data": {
+      "resultType": "vector",
+      "result": [
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "EMAIL",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "PENDING"
+          },
+          "value": [
+            1794782297.332,
+            "2"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "PUSH",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "PENDING"
+          },
+          "value": [
+            1794782297.332,
+            "1"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "EMAIL",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "SENT"
+          },
+          "value": [
+            1794782297.332,
+            "4"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "PUSH",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "SENT"
+          },
+          "value": [
+            1794782297.332,
+            "3"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "EMAIL",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "FAILED"
+          },
+          "value": [
+            1794782297.332,
+            "0"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "PUSH",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "FAILED"
+          },
+          "value": [
+            1794782297.332,
+            "1"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "EMAIL",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "CANCELLED"
+          },
+          "value": [
+            1794782297.332,
+            "1"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "notifications_by_channel",
+            "channel": "PUSH",
+            "instance": "host.docker.internal:8000",
+            "job": "nestjs_notifications",
+            "status": "CANCELLED"
+          },
+          "value": [
+            1794782297.332,
+            "1"
+          ]
+        }
+      ]
+    }
+  },
+  "notifications": [
+    {
+      "id": 1,
+      "content": "Produkt Keyboard1 znów dostępny w magazynie",
+      "channel": "PUSH",
+      "recipient": "ztp-sprawozdanie-mwieybir",
+      "scheduledAt": "2026-11-15T22:36:30.000Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:36:07.340Z",
+      "idempotencyKey": "notif_0gxqIcHMCgNofQTXQKxvfBBv4wFuLe5g"
+    },
+    {
+      "id": 2,
+      "content": "Twoje zamówienie produktu Laptop zostało wysłane.",
+      "channel": "EMAIL",
+      "recipient": "klient@example.com",
+      "scheduledAt": "2026-11-15T22:36:30.000Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:36:09.326Z",
+      "idempotencyKey": "notif_Bwbn4PuuNQNXCPZa-SfnVWgLNoX-kedH"
+    },
+    {
+      "id": 3,
+      "content": "Promocja na kategorię Books",
+      "channel": "EMAIL",
+      "recipient": "klient@example.com",
+      "scheduledAt": "2027-06-01T08:00:00.000Z",
+      "timezone": "Europe/Warsaw",
+      "status": "CANCELLED",
+      "createdAt": "2026-11-15T22:36:48.815Z",
+      "idempotencyKey": "notif_X3BY3nNKtunkw3eCigIZkajGNMxPeZ9e"
+    },
+    {
+      "id": 4,
+      "content": "Czas z oznaczeniem Z",
+      "channel": "PUSH",
+      "recipient": "ztp-sprawozdanie-mwieybir",
+      "scheduledAt": "2027-07-15T09:00:00.000Z",
+      "timezone": "Asia/Tokyo",
+      "status": "PENDING",
+      "createdAt": "2026-11-15T22:36:56.631Z",
+      "idempotencyKey": "notif_Gcgb1-eyCUPz75Up4rnfIyBBa5mxbRGG"
+    },
+    {
+      "id": 5,
+      "content": "Potwierdzenie zamówienia 1024",
+      "channel": "EMAIL",
+      "recipient": "klient@example.com",
+      "scheduledAt": "2027-05-01T08:00:00.000Z",
+      "timezone": "Europe/Warsaw",
+      "status": "PENDING",
+      "createdAt": "2026-11-15T22:37:00.522Z",
+      "idempotencyKey": "zamowienie-1024"
+    },
+    {
+      "id": 6,
+      "content": "Keyboard1 is back in stock",
+      "channel": "EMAIL",
+      "recipient": "klient1@example.com",
+      "scheduledAt": "2026-11-15T22:37:15.177Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:37:05.234Z",
+      "idempotencyKey": "notif_UmokeBedYmcIA0kFTgLM9rCpYkttSYDP"
+    },
+    {
+      "id": 7,
+      "content": "Price drop on Laptop",
+      "channel": "PUSH",
+      "recipient": "ztp-demo",
+      "scheduledAt": "2026-11-15T22:37:20.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:37:05.296Z",
+      "idempotencyKey": "notif_1k-zXBIp8og94IY-uLQna2HEnZt7pz-c"
+    },
+    {
+      "id": 8,
+      "content": "Your order has shipped",
+      "channel": "EMAIL",
+      "recipient": "klient2@example.com",
+      "scheduledAt": "2026-11-15T22:37:25.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:37:05.311Z",
+      "idempotencyKey": "notif_Ogd6xKclR11Shdh2CG95yuTEFytdBKpK"
+    },
+    {
+      "id": 9,
+      "content": "This push cannot be delivered",
+      "channel": "PUSH",
+      "recipient": "invalid topic!",
+      "scheduledAt": "2026-11-15T22:37:30.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "FAILED",
+      "createdAt": "2026-11-15T22:37:05.322Z",
+      "idempotencyKey": "notif_De9hkHkpDWjPUcQIDWtRFWhtwoEiY54I"
+    },
+    {
+      "id": 10,
+      "content": "New category: Books",
+      "channel": "PUSH",
+      "recipient": "ztp-demo",
+      "scheduledAt": "2026-11-15T22:37:35.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:37:05.334Z",
+      "idempotencyKey": "notif_sG4YQNycqVQR85ryP2jXXhKZSSLqFzQP"
+    },
+    {
+      "id": 11,
+      "content": "Weekly summary",
+      "channel": "EMAIL",
+      "recipient": "klient3@example.com",
+      "scheduledAt": "2026-11-15T23:37:05.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "PENDING",
+      "createdAt": "2026-11-15T22:37:05.349Z",
+      "idempotencyKey": "notif_cYmGpnLaVtYoWqRg7yrki0M9C8Vv7E4t"
+    },
+    {
+      "id": 12,
+      "content": "Cancelled promotion",
+      "channel": "PUSH",
+      "recipient": "ztp-demo",
+      "scheduledAt": "2026-11-15T23:37:05.178Z",
+      "timezone": "Europe/Warsaw",
+      "status": "CANCELLED",
+      "createdAt": "2026-11-15T22:37:05.361Z",
+      "idempotencyKey": "notif_KUgjDUCnDtZkUWQ4oPpnbKys9oTKRG5L"
+    },
+    {
+      "id": 13,
+      "content": "Sent once despite a retry",
+      "channel": "EMAIL",
+      "recipient": "klient4@example.com",
+      "scheduledAt": "2026-11-15T22:37:40.385Z",
+      "timezone": "Europe/Warsaw",
+      "status": "SENT",
+      "createdAt": "2026-11-15T22:37:05.394Z",
+      "idempotencyKey": "seed-mwiezw2g"
+    }
+  ]
+}

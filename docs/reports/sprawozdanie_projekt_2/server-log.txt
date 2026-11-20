@@ -1,0 +1,58 @@
+2026-11-15T22:35:59.885Z LOG   [RoutesResolver] ProductHistoryController {/api/v1/products/:id/history}:
+2026-11-15T22:35:59.890Z LOG   [RouterExplorer] Mapped {/api/v1/products/:id/history, GET} route
+2026-11-15T22:35:59.890Z LOG   [RoutesResolver] ProductsController {/api/v1/products}:
+2026-11-15T22:35:59.891Z LOG   [RouterExplorer] Mapped {/api/v1/products, GET} route
+2026-11-15T22:35:59.892Z LOG   [RouterExplorer] Mapped {/api/v1/products/:id, GET} route
+2026-11-15T22:35:59.893Z LOG   [RouterExplorer] Mapped {/api/v1/products, POST} route
+2026-11-15T22:35:59.893Z LOG   [RouterExplorer] Mapped {/api/v1/products/:id, PUT} route
+2026-11-15T22:35:59.893Z LOG   [RouterExplorer] Mapped {/api/v1/products/:id, PATCH} route
+2026-11-15T22:35:59.894Z LOG   [RouterExplorer] Mapped {/api/v1/products/:id, DELETE} route
+2026-11-15T22:35:59.894Z LOG   [RoutesResolver] NotificationsController {/api/v1/notifications}:
+2026-11-15T22:35:59.894Z LOG   [RouterExplorer] Mapped {/api/v1/notifications, POST} route
+2026-11-15T22:35:59.894Z LOG   [RouterExplorer] Mapped {/api/v1/notifications/process-ready, POST} route
+2026-11-15T22:35:59.895Z LOG   [RouterExplorer] Mapped {/api/v1/notifications/:id/send-now, POST} route
+2026-11-15T22:35:59.895Z LOG   [RouterExplorer] Mapped {/api/v1/notifications, GET} route
+2026-11-15T22:35:59.895Z LOG   [RouterExplorer] Mapped {/api/v1/notifications/:id, GET} route
+2026-11-15T22:35:59.895Z LOG   [RouterExplorer] Mapped {/api/v1/notifications/:id/status, PATCH} route
+2026-11-15T22:35:59.896Z LOG   [RoutesResolver] NotificationsMetricsController {/api/v1/metrics}:
+2026-11-15T22:35:59.896Z LOG   [RouterExplorer] Mapped {/metrics, GET} route
+2026-11-15T22:35:59.897Z LOG   [LifecycleService] Lifecycle module initialized
+2026-11-15T22:35:59.899Z LOG   [LifecycleService] Application initialized; preparing to listen for requests
+2026-11-15T22:35:59.900Z LOG   [NotificationWorker] Notification worker started; interval 5000 ms
+2026-11-15T22:35:59.900Z LOG   [NestApplication] Nest application successfully started
+2026-11-15T22:36:07.399Z LOG   [NotificationsService] Created notification with ID 1 scheduled at 2026-11-15T22:36:30.000Z
+2026-11-15T22:36:09.373Z LOG   [NotificationsService] Created notification with ID 2 scheduled at 2026-11-15T22:36:30.000Z
+2026-11-15T22:36:35.021Z LOG   [NotificationsService] Notification 1 (PUSH) is SENT
+2026-11-15T22:36:35.158Z LOG   [NotificationsService] Notification 2 (EMAIL) is SENT
+2026-11-15T22:36:35.173Z LOG   [NotificationWorker] Processed 2 due notification(s)
+2026-11-15T22:36:48.856Z LOG   [NotificationsService] Created notification with ID 3 scheduled at 2027-06-01T08:00:00.000Z
+2026-11-15T22:36:50.873Z LOG   [NotificationsService] Notification 3 changed status to CANCELLED
+2026-11-15T22:36:56.649Z LOG   [NotificationsService] Created notification with ID 4 scheduled at 2027-07-15T09:00:00.000Z
+2026-11-15T22:37:00.532Z LOG   [NotificationsService] Created notification with ID 5 scheduled at 2027-05-01T08:00:00.000Z
+2026-11-15T22:37:02.486Z LOG   [NotificationsService] Idempotent replay: returning notification 5
+2026-11-15T22:37:05.274Z LOG   [NotificationsService] Created notification with ID 6 scheduled at 2026-11-15T22:37:15.177Z
+2026-11-15T22:37:05.303Z LOG   [NotificationsService] Created notification with ID 7 scheduled at 2026-11-15T22:37:20.178Z
+2026-11-15T22:37:05.315Z LOG   [NotificationsService] Created notification with ID 8 scheduled at 2026-11-15T22:37:25.178Z
+2026-11-15T22:37:05.327Z LOG   [NotificationsService] Created notification with ID 9 scheduled at 2026-11-15T22:37:30.178Z
+2026-11-15T22:37:05.342Z LOG   [NotificationsService] Created notification with ID 10 scheduled at 2026-11-15T22:37:35.178Z
+2026-11-15T22:37:05.353Z LOG   [NotificationsService] Created notification with ID 11 scheduled at 2026-11-15T23:37:05.178Z
+2026-11-15T22:37:05.367Z LOG   [NotificationsService] Created notification with ID 12 scheduled at 2026-11-15T23:37:05.178Z
+2026-11-15T22:37:05.384Z LOG   [NotificationsService] Notification 12 changed status to CANCELLED
+2026-11-15T22:37:05.399Z LOG   [NotificationsService] Created notification with ID 13 scheduled at 2026-11-15T22:37:40.385Z
+2026-11-15T22:37:05.408Z LOG   [NotificationsService] Idempotent replay: returning notification 13
+2026-11-15T22:37:15.321Z LOG   [NotificationsService] Notification 6 (EMAIL) is SENT
+2026-11-15T22:37:15.358Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:37:20.396Z LOG   [NotificationsService] Notification 7 (PUSH) is SENT
+2026-11-15T22:37:20.433Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:37:25.490Z LOG   [NotificationsService] Notification 8 (EMAIL) is SENT
+2026-11-15T22:37:25.500Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:37:30.535Z WARN  [NotificationsService] Notification 9 (PUSH) failed: ntfy responded with HTTP 404
+2026-11-15T22:37:30.544Z LOG   [NotificationsService] Notification 9 (PUSH) is FAILED
+2026-11-15T22:37:30.583Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:37:35.620Z LOG   [NotificationsService] Notification 10 (PUSH) is SENT
+2026-11-15T22:37:35.627Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:37:40.687Z LOG   [NotificationsService] Notification 13 (EMAIL) is SENT
+2026-11-15T22:37:40.725Z LOG   [NotificationWorker] Processed 1 due notification(s)
+2026-11-15T22:38:17.754Z LOG   [LifecycleService] Application teardown started
+2026-11-15T22:38:17.755Z LOG   [LifecycleService] Shutdown requested (app.close()); draining HTTP requests before releasing resources
+2026-11-15T22:38:17.758Z LOG   [LifecycleService] HTTP server closed (app.close()); running resource shutdown hooks

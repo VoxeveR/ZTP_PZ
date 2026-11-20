@@ -1,0 +1,107 @@
+{
+  "schema": [
+    {
+      "column_name": "id",
+      "data_type": "integer",
+      "character_maximum_length": null,
+      "is_nullable": "NO",
+      "column_default": "nextval('notifications_id_seq'::regclass)"
+    },
+    {
+      "column_name": "content",
+      "data_type": "text",
+      "character_maximum_length": null,
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "channel",
+      "data_type": "character varying",
+      "character_maximum_length": 10,
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "recipient",
+      "data_type": "character varying",
+      "character_maximum_length": 255,
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "scheduled_at",
+      "data_type": "timestamp with time zone",
+      "character_maximum_length": null,
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "timezone",
+      "data_type": "character varying",
+      "character_maximum_length": 64,
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "status",
+      "data_type": "character varying",
+      "character_maximum_length": 10,
+      "is_nullable": "NO",
+      "column_default": "'PENDING'::character varying"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "character_maximum_length": null,
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "column_name": "idempotency_key",
+      "data_type": "character varying",
+      "character_maximum_length": 255,
+      "is_nullable": "NO",
+      "column_default": null
+    }
+  ],
+  "constraints": [
+    {
+      "conname": "notifications_channel_check",
+      "definition": "CHECK (((channel)::text = ANY ((ARRAY['EMAIL'::character varying, 'PUSH'::character varying])::text[])))"
+    },
+    {
+      "conname": "notifications_content_check",
+      "definition": "CHECK ((btrim(content) <> ''::text))"
+    },
+    {
+      "conname": "notifications_idempotency_key_unique",
+      "definition": "UNIQUE (idempotency_key)"
+    },
+    {
+      "conname": "notifications_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "conname": "notifications_recipient_check",
+      "definition": "CHECK ((btrim((recipient)::text) <> ''::text))"
+    },
+    {
+      "conname": "notifications_status_check",
+      "definition": "CHECK (((status)::text = ANY ((ARRAY['PENDING'::character varying, 'SENT'::character varying, 'FAILED'::character varying, 'CANCELLED'::character varying])::text[])))"
+    }
+  ],
+  "indexes": [
+    {
+      "indexname": "notifications_idempotency_key_unique",
+      "indexdef": "CREATE UNIQUE INDEX notifications_idempotency_key_unique ON public.notifications USING btree (idempotency_key)"
+    },
+    {
+      "indexname": "notifications_pending_scheduled_idx",
+      "indexdef": "CREATE INDEX notifications_pending_scheduled_idx ON public.notifications USING btree (scheduled_at, id) WHERE ((status)::text = 'PENDING'::text)"
+    },
+    {
+      "indexname": "notifications_pkey",
+      "indexdef": "CREATE UNIQUE INDEX notifications_pkey ON public.notifications USING btree (id)"
+    }
+  ]
+}

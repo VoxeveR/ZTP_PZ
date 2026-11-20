@@ -1,0 +1,109 @@
+{
+  "pages": 13,
+  "summary": [
+    {
+      "page": 1,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 377,
+      "start": "SPRAWOZDANIE\n\nProjekt 2\n\nSystem planowania\ni obsługi powiadomień\n\nNestJS • TypeScript • PostgreSQL • MailHog • ntfy • Prometheus\n\n",
+      "end": "\n\nZiętek\n\n\n\n\nGrupa\n\n\t\n\nSiRR\n\nZakres: etapy 2.1-2.3 - maszyna stanów, planowanie w UTC, wysyłka EMAIL i PUSH, worker, idempotencja i metryki.\n\nData opracowania: 15.11.2026"
+    },
+    {
+      "page": 2,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 3382,
+      "start": "1. Wstęp\n\nCelem projektu jest rozbudowa aplikacji z Projektu 1 o system planowania i obsługi powiadomień dotyczących produktów. Po",
+      "end": "o obok modułów produktów. Moduł nie zależy od produktów: komunikuje się z innymi częściami aplikacji wyłącznie przez wspólną infrastrukturę (baza, konfiguracja, OpenAPI)."
+    },
+    {
+      "page": 3,
+      "width": 793.71875,
+      "height": 1607.25,
+      "characters": 1593,
+      "start": "2. Interaktywna dokumentacja\n\nSwagger UI generowany przez @nestjs/swagger opisuje endpointy, parametry, modele i kody odpowiedzi. ",
+      "end": "racjami (ztp_test_691a9893f47d4b0aaefede576a503d38), usuniętej po zakończeniu. Ilustracje łączą nagłówek operacji z wykonaną odpowiedzią; nie zmieniano treści odpowiedzi."
+    },
+    {
+      "page": 4,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 1459,
+      "start": "3. Moduł planowania i obsługi powiadomień\n\n3.1. Implementacja w architekturze warstwowej\n\nRysunek 3. Warstwy modułu powiadomień i ",
+      "end": "asu, status PENDING, klucz idempotencji) i NotificationsRepository.create(). Serwis nie zna protokołu HTTP: rzuca błędy domenowe, które filtr tłumaczy na kody odpowiedzi."
+    },
+    {
+      "page": 5,
+      "width": 793.71875,
+      "height": 2072.390625,
+      "characters": 2332,
+      "start": "3.2. Maszyna stanów\n\nRysunek 4. Dozwolone przejścia statusu powiadomienia.\n\nPowiadomienie po utworzeniu ma status PENDING. Tylko z",
+      "end": "ELLED.\n\nRysunek 6. PATCH /{id}/status - HTTP 422, ze stanu CANCELLED nie ma przejść.\n\nRysunek 7. POST /{id}/send-now - HTTP 422, wysłać można tylko powiadomienie PENDING."
+    },
+    {
+      "page": 6,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 499,
+      "start": "3.3. Kanały komunikacji\n\nKanał wybiera dispatcher na podstawie pola channel. Dodanie kolejnego kanału wymaga rozszerzenia enum, di",
+      "end": "ku (np. błąd sieci, odpowiedź ntfy inna niż 2xx, przekroczenie 5 s) status FAILED i wpis w logu. Zapis następuje w tej samej transakcji, w której wiersz jest zablokowany."
+    },
+    {
+      "page": 7,
+      "width": 793.71875,
+      "height": 1703.921875,
+      "characters": 1747,
+      "start": "3.3.1. Powiadomienia PUSH\n\n3.3.1.1. Opis implementacji\n\nDla kanału PUSH pole recipient jest nazwą topicu ntfy. Wysyłka to żądanie ",
+      "end": "i/v1/notifications/{id} po terminie - status SENT nadany przez worker.\n\nRysunek 10. Interfejs webowy ntfy - dostarczone powiadomienie na topicu ztp-sprawozdanie-mwieybir."
+    },
+    {
+      "page": 8,
+      "width": 793.71875,
+      "height": 1652.25,
+      "characters": 1311,
+      "start": "3.3.2. Powiadomienia Email\n\n3.3.2.1. Opis implementacji\n\nDla kanału EMAIL serwis korzysta z biblioteki nodemailer i protokołu SMTP",
+      "end": "TP 201, zaplanowane powiadomienie EMAIL.\n\nRysunek 12. GET /api/v1/notifications/{id} po terminie - status SENT.\n\nRysunek 13. MailHog - wiadomość dostarczona przez worker."
+    },
+    {
+      "page": 9,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 1962,
+      "start": "3.4. Worker cykliczny\n\nWorker realizuje zaplanowane powiadomienia bez udziału klienta. Co NOTIFICATION_WORKER_INTERVAL_MS (domyśln",
+      "end": "Notification 7 (PUSH) is SENT\n\n22:37:20Z LOG   [NotificationWorker] Processed 1 due notification(s)\n\n22:37:25Z LOG   [NotificationsService] Notification 8 (EMAIL) is SENT"
+    },
+    {
+      "page": 10,
+      "width": 793.71875,
+      "height": 1292.15625,
+      "characters": 1795,
+      "start": "3.5. Planowanie czasowe z konwersją do UTC\n\nKlient podaje scheduledAt w formacie ISO 8601 oraz nazwę strefy IANA w polu timezone. ",
+      "end": "1-05.\n\nRysunek 14. POST - czas z oznaczeniem Z zapisany bez przesunięcia, mimo strefy Asia/Tokyo.\n\nRysunek 15. POST - HTTP 422, planowany moment musi leżeć w przyszłości."
+    },
+    {
+      "page": 11,
+      "width": 793.71875,
+      "height": 1532.96875,
+      "characters": 1721,
+      "start": "3.6. Idempotencja\n\nIdempotencja pozwala bezpiecznie ponowić żądanie, np. po przekroczeniu czasu połączenia, gdy klient nie wie, cz",
+      "end": "wiadomienie.\n\nRysunek 17. Ponowienie tego samego żądania - HTTP 200, to samo id, nagłówek idempotent-replayed: true.\n\nRysunek 18. Ten sam klucz z inną treścią - HTTP 409."
+    },
+    {
+      "page": 12,
+      "width": 793.71875,
+      "height": 3328.078125,
+      "characters": 3149,
+      "start": "4. Prometheus - metryki i statystyki\n\nPrometheus to system monitorowania, który cyklicznie pobiera (scrape) metryki z aplikacji w ",
+      "end": "etrics; zgodność wszystkich serii z kroku 5 instrukcji oraz zmianę metryk po dodaniu i anulowaniu powiadomienia (krok 7) sprawdzono w scenariuszach TC-2.3-10 i TC-2.3-11."
+    },
+    {
+      "page": 13,
+      "width": 793.71875,
+      "height": 1122.53125,
+      "characters": 388,
+      "start": "Bibliografia\n\n[1] ntfy - dokumentacja: https://docs.ntfy.sh/\n\n[2] MailHog - repozytorium projektu: https://github.com/mailhog/Mail",
+      "end": "rometheus - Exposition formats: https://prometheus.io/docs/instrumenting/exposition_formats/\n\n[5] NestJS - OpenAPI (Swagger): https://docs.nestjs.com/openapi/introduction"
+    }
+  ]
+}
