@@ -76,12 +76,21 @@ has a frontend, run the same cases through the frontend instead.
   with `assets/` and generator scripts in the same folder (mirror `docs/reports/sprawozdanie_projekt_1/`).
 - Content: follow the table of contents from the lab's `imie_nazwisko_grupa_sprawozdanie_projekt_<N>.docx` exactly.
 - Styling: match `docs/reports/sprawozdanie_projekt_1/Piotr_Zietek_SiRR_nst_sprawozdanie_projekt_1.docx`
-  (fonts, colors, headers/footers, tables, code blocks, figure captions).
+  (fonts, colors, tables, code blocks, figure captions), with these rules taking precedence:
+  - No page header at all. The footer contains only the page number, centred.
+  - Title page author table filled in: Numer albumu 148585, Imię Piotr, Nazwisko Ziętek, Grupa SiRR.
+  - No "Kod źródłowy: …" notes or other pointers to source files.
+  - Few code snippets: only where a template point needs the code to make sense (e.g. a state machine definition,
+    a key algorithm, a config the instruction asks for). Describe the rest in prose; never paste whole files.
+  - Bibliography at the end, titled "Bibliografia": a bullet list of entries with links, nothing else (no intro
+    text, no table of local materials).
 - Reuse the lab 1 tooling as a starting point and copy it, don't edit it in place:
   - `capture-evidence.cjs`: runs the app on a throwaway DB and takes Swagger UI screenshots, writes `evidence.json`
   - `build-report.cjs`: builds the .docx with the `docx` library (style helpers `p/h/code/table/image`)
   - `inspect-pdf.cjs`, `preview-docx.cjs`: render and check the layout
   - These load `docx`, `sharp` and `playwright` from `%TEMP%/ztp-report-tools/node_modules`.
     Install there with `npm i --prefix "$TEMP/ztp-report-tools" docx sharp playwright` if missing.
+- Typography: never use long dashes (— or –), only the short hyphen "-", also in ranges (e.g. "10-35 s") and
+  in titles and captions. Check the built .docx for "—" and "–" before handing it over.
 - Screenshots and outputs must come from real runs, never made up. Render the docx and check its layout before you hand it over.
 - Ask for acceptance of the report, then commit it as `<N>: report`.
