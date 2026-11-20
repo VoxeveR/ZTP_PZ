@@ -3,9 +3,9 @@
     "page": 1,
     "width": 793.71875,
     "height": 1122.53125,
-    "characters": 377,
-    "start": "SPRAWOZDANIE\n\nProjekt 2\n\nSystem planowania\ni obsługi powiadomień\n\nNestJS • TypeScript • PostgreSQL • MailHog • ntfy • Prometheus\n\n",
-    "end": "\n\nZiętek\n\n\n\n\nGrupa\n\n\t\n\nSiRR\n\nZakres: etapy 2.1-2.3 - maszyna stanów, planowanie w UTC, wysyłka EMAIL i PUSH, worker, idempotencja i metryki.\n\nData opracowania: 15.11.2026"
+    "characters": 303,
+    "start": "SPRAWOZDANIE\n\nProjekt 2\n\nSystem planowania\ni obsługi powiadomień\n\nPiotr Ziętek\n\nNr albumu 148585   •   Grupa SiRR\n\nEtapy 2.1-2.3: ",
+    "end": "zyna stanów, planowanie w UTC, wysyłka EMAIL i PUSH,\nworker, idempotencja i metryki Prometheus\n\nNestJS • TypeScript • PostgreSQL • MailHog • ntfy • Prometheus\n\n15.11.2026"
   },
   {
     "page": 2,

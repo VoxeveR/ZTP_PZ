@@ -178,14 +178,21 @@ async function diagrams() {
     .map((l) => l.match(/status="(\w+)",channel="(\w+)"} (\d+)/).slice(1));
   const captureDate = new Date(evidence.capturedAt).toLocaleDateString('pl-PL', { timeZone: 'Europe/Warsaw', day: '2-digit', month: '2-digit', year: 'numeric' });
 
-  // Title page.
-  p('SPRAWOZDANIE', { alignment: AlignmentType.CENTER, spacing: { before: 850, after: 160 }, children: [textRun('SPRAWOZDANIE', { bold: true, size: 30, color: teal })] });
-  p('Projekt 2', { alignment: AlignmentType.CENTER, spacing: { after: 170 }, children: [textRun('Projekt 2', { bold: true, size: 58, color: navy })] });
-  p('', { alignment: AlignmentType.CENTER, spacing: { after: 220 }, children: [textRun('System planowania', { bold: true, size: 36, color: navy }), new TextRun({ break: 1 }), textRun('i obsługi powiadomień', { bold: true, size: 36, color: navy })] });
-  p('', { alignment: AlignmentType.CENTER, children: [textRun('NestJS • TypeScript • PostgreSQL • MailHog • ntfy • Prometheus', { size: 24, color: gray })], spacing: { after: 750 } });
-  table(['Dane autora', ''], [['Numer albumu', '148585'], ['Imię', 'Piotr'], ['Nazwisko', 'Ziętek'], ['Grupa', 'SiRR']], [2800, 6500]);
-  p('Zakres: etapy 2.1-2.3 - maszyna stanów, planowanie w UTC, wysyłka EMAIL i PUSH, worker, idempotencja i metryki.', { alignment: AlignmentType.CENTER, spacing: { before: 220, after: 160 } });
-  p('', { alignment: AlignmentType.CENTER, children: [textRun(`Data opracowania: ${captureDate}`, { size: 21, color: gray })] });
+  // Title page: label, project, title, a short accent rule, then the author directly under the title (no table).
+  const centered = (runs, spacing) => p('', { alignment: AlignmentType.CENTER, spacing, children: runs });
+  centered([textRun('SPRAWOZDANIE', { bold: true, size: 26, color: teal, characterSpacing: 80 })], { before: 2300, after: 320 });
+  centered([textRun('Projekt 2', { bold: true, size: 64, color: navy })], { after: 360 });
+  centered([textRun('System planowania', { bold: true, size: 38, color: navy }), new TextRun({ break: 1 }),
+    textRun('i obsługi powiadomień', { bold: true, size: 38, color: navy })], { after: 560, line: 340 });
+  p('', { alignment: AlignmentType.CENTER, indent: { left: 3950, right: 3950 }, spacing: { after: 620 },
+    border: { bottom: { style: BorderStyle.SINGLE, size: 14, color: teal, space: 1 } } });
+  centered([textRun('Piotr Ziętek', { bold: true, size: 34, color: navy })], { after: 160 });
+  centered([textRun('Nr albumu 148585', { size: 24, color: gray }), textRun('   •   ', { size: 24, color: teal }),
+    textRun('Grupa SiRR', { size: 24, color: gray })], { after: 4300 });
+  centered([textRun('Etapy 2.1-2.3: maszyna stanów, planowanie w UTC, wysyłka EMAIL i PUSH,', { size: 21, color: gray }),
+    new TextRun({ break: 1 }), textRun('worker, idempotencja i metryki Prometheus', { size: 21, color: gray })], { after: 160, line: 270 });
+  centered([textRun('NestJS • TypeScript • PostgreSQL • MailHog • ntfy • Prometheus', { size: 21, color: gray })], { after: 160 });
+  centered([textRun(captureDate, { size: 21, color: gray })], {});
 
   // 1. Wstęp.
   h('1. Wstęp', 1, true);

@@ -78,7 +78,9 @@ has a frontend, run the same cases through the frontend instead.
 - Styling: match `docs/reports/sprawozdanie_projekt_1/Piotr_Zietek_SiRR_nst_sprawozdanie_projekt_1.docx`
   (fonts, colors, tables, code blocks, figure captions), with these rules taking precedence:
   - No page header at all. The footer contains only the page number, centred.
-  - Title page author table filled in: Numer albumu 148585, Imię Piotr, Nazwisko Ziętek, Grupa SiRR.
+  - Title page like the lab 1 report (label "SPRAWOZDANIE", "Projekt <N>", the title), but no author table: right
+    under the title a short accent line, then "Piotr Ziętek" and "Nr albumu 148585 • Grupa SiRR". Scope, stack and
+    date go small at the bottom of the page. Reuse the title page code of the latest report's `build-report.cjs`.
   - No "Kod źródłowy: …" notes or other pointers to source files.
   - Few code snippets: only where a template point needs the code to make sense (e.g. a state machine definition,
     a key algorithm, a config the instruction asks for). Describe the rest in prose; never paste whole files.
